@@ -1,7 +1,7 @@
+import Home from "./pages/Home/Home";
+
 function App() {
-  return (
-    <h1>StudentOS 🚀</h1>
-  );
+  return <Home />;
 }
 
 export default App;

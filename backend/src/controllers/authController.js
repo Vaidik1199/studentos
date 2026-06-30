@@ -51,3 +51,61 @@ export const registerUser = async (req, res) => {
     });
   }
 };
+
+// ==========================
+// Login User (Temporary)
+// ==========================
+
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check required fields
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required.",
+      });
+    }
+
+    // Find user
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    // Compare password
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful.",
+      data: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+    });
+  }
+};

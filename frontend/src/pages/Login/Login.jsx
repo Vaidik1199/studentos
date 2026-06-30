@@ -1,28 +1,51 @@
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import AuthLayout from "../../components/auth/AuthLayout";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 
+import loginSchema from "../../validations/loginSchema";
+
 function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
     <AuthLayout
       title="Welcome Back"
       subtitle="Login to continue your journey."
     >
-      <form className="space-y-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-5"
+      >
         <Input
           label="Email"
-          type="email"
           name="email"
+          type="email"
           placeholder="Enter your email"
+          register={register}
+          error={errors.email}
         />
 
         <Input
           label="Password"
-          type="password"
           name="password"
+          type="password"
           placeholder="Enter your password"
+          register={register}
+          error={errors.password}
         />
 
         <div className="flex justify-end">

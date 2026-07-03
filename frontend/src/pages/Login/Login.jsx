@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { useAuth } from "../../contexts/AuthContext";
 import AuthLayout from "../../components/auth/AuthLayout";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
@@ -11,6 +11,7 @@ import { loginUser } from "../../services/authService";
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -26,7 +27,7 @@ function Login() {
 
       console.log("LOGIN RESPONSE:", response);
 
-      localStorage.setItem("token", response.token);
+      login(response.token);
 
       alert(response.message);
 

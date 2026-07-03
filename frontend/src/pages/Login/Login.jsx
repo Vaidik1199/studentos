@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -7,18 +7,35 @@ import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 
 import loginSchema from "../../validations/loginSchema";
+import { loginUser } from "../../services/authService";
 
 function Login() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await loginUser(data);
+
+      console.log("LOGIN RESPONSE:", response);
+
+      localStorage.setItem("token", response.token);
+
+      alert(response.message);
+
+      navigate("/dashboard");
+    } catch (error) {
+      alert(
+        error.response?.data?.message || "Something went wrong."
+      );
+    }
   };
 
   return (
@@ -57,8 +74,11 @@ function Login() {
           </button>
         </div>
 
-        <Button type="submit">
-          Login
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Logging in..." : "Login"}
         </Button>
 
         <p className="text-center text-sm text-slate-400">

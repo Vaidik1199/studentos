@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import Attendance from "../pages/Attendance/Attendance";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -23,6 +24,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/attendance"
+          element={
+            <ProtectedRoute>
+              <Attendance />
             </ProtectedRoute>
           }
         />

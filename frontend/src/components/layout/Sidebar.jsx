@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function Sidebar() {
   return (
     <aside className="w-64 border-r border-slate-800 bg-slate-900 p-6">
@@ -12,9 +14,18 @@ function Sidebar() {
           Dashboard
         </button>
 
-        <button className="w-full rounded-xl px-4 py-3 text-left hover:bg-slate-800">
+        <NavLink
+          to="/attendance"
+          className={({ isActive }) =>
+          `block rounded-xl px-4 py-3 transition ${
+          isActive
+          ? "bg-indigo-600 text-white"
+          : "hover:bg-slate-800"
+          }`
+          }
+        >
           Attendance
-        </button>
+        </NavLink>
 
         <button className="w-full rounded-xl px-4 py-3 text-left hover:bg-slate-800">
           Assignments

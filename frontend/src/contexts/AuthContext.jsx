@@ -4,6 +4,7 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -11,6 +12,8 @@ export function AuthProvider({ children }) {
     if (storedToken) {
       setToken(storedToken);
     }
+
+    setLoading(false);
   }, []);
 
   const login = (jwt) => {
@@ -27,6 +30,7 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         token,
+        loading,
         isAuthenticated: !!token,
         login,
         logout,

@@ -3,6 +3,7 @@ function Button({
   type = "button",
   variant = "primary",
   onClick,
+  disabled = false,
 }) {
   const baseClasses =
     "w-full rounded-xl px-4 py-3 font-semibold transition-all duration-300";
@@ -19,7 +20,12 @@ function Button({
     <button
       type={type}
       onClick={onClick}
-      className={`${baseClasses} ${variants[variant]}`}
+      disabled={disabled}
+      className={`${baseClasses} ${variants[variant]} ${
+        disabled
+          ? "cursor-not-allowed opacity-60"
+          : ""
+      }`}
     >
       {children}
     </button>

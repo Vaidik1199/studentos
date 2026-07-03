@@ -19,7 +19,7 @@ function Input({
         id={name}
         type={type}
         placeholder={placeholder}
-        {...register(name)}
+        {...(register ? register(name) : {})}
         className={`w-full rounded-xl border bg-slate-950 px-4 py-3 text-white outline-none transition-all duration-300 ${
           error
             ? "border-red-500 focus:ring-2 focus:ring-red-500/20"

@@ -28,9 +28,16 @@ export const createAttendance = async (req, res) => {
 
 export const getAttendance = async (req, res) => {
   try {
+    console.log("========== GET ATTENDANCE ==========");
+    console.log("Authenticated User ID:", req.user._id);
+    console.log("Authenticated Email:", req.user.email);
+
     const attendance = await Attendance.find({
       user: req.user._id,
     });
+
+    console.log("Attendance Found:", attendance);
+    console.log("===================================");
 
     return res.status(200).json({
       success: true,

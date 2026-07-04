@@ -5,7 +5,7 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Attendance from "../pages/Attendance/Attendance";
-
+import Notes from "../pages/Notes/Notes";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -19,6 +19,8 @@ function AppRoutes() {
 
         <Route path="/register" element={<Register />} />
 
+        <Route path="/notes"element={<Notes />}/>
+        
         <Route
           path="/dashboard"
           element={

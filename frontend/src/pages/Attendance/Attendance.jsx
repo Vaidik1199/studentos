@@ -72,7 +72,7 @@ function Attendance() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
-
+        {/* Heading */}
         <div>
           <h1 className="text-4xl font-bold text-white">
             Attendance
@@ -83,6 +83,7 @@ function Attendance() {
           </p>
         </div>
 
+        {/* Form */}
         <AttendanceForm
           onSubmit={
             editingAttendance
@@ -93,6 +94,7 @@ function Attendance() {
           cancelEdit={() => setEditingAttendance(null)}
         />
 
+        {/* Cards */}
         {loading ? (
           <p className="text-slate-400">
             Loading attendance...
@@ -113,33 +115,76 @@ function Attendance() {
               const percentage =
                 item.totalClasses === 0
                   ? 0
-                  : (
-                      (item.attendedClasses /
-                        item.totalClasses) *
-                      100
-                    ).toFixed(1);
+                  : Number(
+                      (
+                        (item.attendedClasses /
+                          item.totalClasses) *
+                        100
+                      ).toFixed(1)
+                    );
 
               return (
                 <div
                   key={item._id}
-                  className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
+                  className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg transition hover:-translate-y-1 hover:border-indigo-500"
                 >
-                  <h2 className="text-xl font-semibold text-white">
+                  <h2 className="text-2xl font-bold text-white">
                     {item.subject}
                   </h2>
 
-                  <p className="mt-3 text-slate-400">
+                  <p className="mt-3 text-lg text-slate-300">
                     {item.attendedClasses} / {item.totalClasses} Classes
                   </p>
 
-                  <p className="mt-4 text-3xl font-bold text-indigo-400">
-                    {percentage}%
-                  </p>
+                  {/* Progress */}
+                  <div className="mt-6">
+                    <div className="mb-2 flex justify-between">
+                      <span className="text-slate-400">
+                        Attendance
+                      </span>
 
+                      <span className="font-bold text-white">
+                        {percentage}%
+                      </span>
+                    </div>
+
+                    <div className="h-3 overflow-hidden rounded-full bg-slate-800">
+                      <div
+                        className={`h-full transition-all duration-500 ${
+                          percentage >= 75
+                            ? "bg-emerald-500"
+                            : percentage >= 60
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                        }`}
+                        style={{
+                          width: `${percentage}%`,
+                        }}
+                      />
+                    </div>
+
+                    <p
+                      className={`mt-4 font-semibold ${
+                        percentage >= 75
+                          ? "text-emerald-400"
+                          : percentage >= 60
+                          ? "text-yellow-400"
+                          : "text-red-400"
+                      }`}
+                    >
+                      {percentage >= 75
+                        ? "🟢 Excellent Attendance"
+                        : percentage >= 60
+                        ? "🟡 Need Improvement"
+                        : "🔴 Attendance Critical"}
+                    </p>
+                  </div>
+
+                  {/* Buttons */}
                   <div className="mt-6 flex gap-3">
                     <button
                       onClick={() => setEditingAttendance(item)}
-                      className="flex-1 rounded-xl bg-amber-500 py-2 font-semibold text-white hover:bg-amber-600"
+                      className="flex-1 rounded-xl bg-amber-500 py-2 font-semibold text-white transition hover:bg-amber-600"
                     >
                       Edit
                     </button>
@@ -148,7 +193,7 @@ function Attendance() {
                       onClick={() =>
                         handleDeleteAttendance(item._id)
                       }
-                      className="flex-1 rounded-xl bg-red-600 py-2 font-semibold text-white hover:bg-red-700"
+                      className="flex-1 rounded-xl bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
                     >
                       Delete
                     </button>

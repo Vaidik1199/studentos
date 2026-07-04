@@ -1,16 +1,18 @@
-import authRoutes from "./routes/authRoutes.js";
+import "dotenv/config";
+
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
+
+import connectDB from "./config/db.js";
+
+import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-import connectDB from "./config/db.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
-
-dotenv.config();
+import aiRoutes from "./routes/aiRoutes.js";
 
 const app = express();
 
@@ -18,6 +20,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
+
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/attendance", attendanceRoutes);
@@ -25,6 +28,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notes", noteRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.get("/", (_, res) => {
   res.json({

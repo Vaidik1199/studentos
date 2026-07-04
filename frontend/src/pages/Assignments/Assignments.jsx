@@ -5,6 +5,7 @@ import AssignmentForm from "../../components/assignments/AssignmentForm";
 import AssignmentCard from "../../components/assignments/AssignmentCard";
 
 import toast from "react-hot-toast";
+import ConfirmModal from "../../components/ui/ConfirmModal";
 
 import {
   getAssignments,
@@ -17,6 +18,8 @@ function Assignments() {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingAssignment, setEditingAssignment] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     fetchAssignments();
@@ -84,23 +87,20 @@ function Assignments() {
   }
   };
 
-  const handleDeleteAssignment = async (id) => {
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this assignment?"
-  );
+  const handleDeleteAssignment = async () => {
+    try {
+      await deleteAssignment(deleteId);
 
-  if (!confirmed) return;
+      toast.success("Assignment deleted successfully.");
 
-  try {
-    await deleteAssignment(id);
+      setShowDeleteModal(false);
+      setDeleteId(null);
 
-    toast.success("Assignment deleted successfully.");
-
-    await fetchAssignments();
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete assignment.");
-  }
+      await fetchAssignments();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete assignment.");
+    }
   };
 
   return (
@@ -148,7 +148,10 @@ function Assignments() {
                 key={assignment._id}
                 assignment={assignment}
                 onEdit={setEditingAssignment}
-                onDelete={handleDeleteAssignment}
+                onDelete={(id) => {
+                  setDeleteId(id);
+                  setShowDeleteModal(true);
+                }}
                 onToggleStatus={handleToggleStatus}
               />
             ))}
@@ -156,6 +159,16 @@ function Assignments() {
         )}
 
       </div>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Assignment"
+        message="Are you sure you want to delete this assignment?"
+        onConfirm={handleDeleteAssignment}
+        onCancel={() => {
+          setShowDeleteModal(false);
+          setDeleteId(null);
+        }}
+      />
     </DashboardLayout>
   );
 }

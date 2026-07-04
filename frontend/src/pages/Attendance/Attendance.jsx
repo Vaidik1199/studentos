@@ -4,6 +4,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import AttendanceForm from "../../components/attendance/AttendanceForm";
 
 import toast from "react-hot-toast";
+import ConfirmModal from "../../components/ui/ConfirmModal";
 
 import {
   getAttendance,
@@ -16,6 +17,8 @@ function Attendance() {
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingAttendance, setEditingAttendance] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     fetchAttendance();
@@ -60,17 +63,14 @@ function Attendance() {
   }
   };
 
-  const handleDeleteAttendance = async (id) => {
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this attendance record?"
-  );
-
-  if (!confirmed) return;
-
+  const handleDeleteAttendance = async () => {
   try {
-    await deleteAttendance(id);
+    await deleteAttendance(deleteId);
 
     toast.success("Attendance deleted successfully.");
+
+    setShowDeleteModal(false);
+    setDeleteId(null);
 
     await fetchAttendance();
   } catch (error) {
@@ -200,9 +200,10 @@ function Attendance() {
                     </button>
 
                     <button
-                      onClick={() =>
-                        handleDeleteAttendance(item._id)
-                      }
+                      onClick={() => {  
+                        setDeleteId(item._id);
+                        setShowDeleteModal(true);
+                      }}
                       className="flex-1 rounded-xl bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
                     >
                       Delete
@@ -214,6 +215,16 @@ function Attendance() {
           </div>
         )}
       </div>
+      <ConfirmModal 
+        isOpen={showDeleteModal}
+        title="Delete Attendance"
+        message="Are you sure you want to delete this attendance record?"
+        onConfirm={handleDeleteAttendance}
+        onCancel={() => {
+          setShowDeleteModal(false);
+          setDeleteId(null);
+        }}
+      />
     </DashboardLayout>
   );
 }

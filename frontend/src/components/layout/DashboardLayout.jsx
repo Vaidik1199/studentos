@@ -3,20 +3,20 @@ import Topbar from "./Topbar";
 
 function DashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto flex min-h-screen max-w-[1600px]">
+        <Sidebar />
 
-      <Sidebar />
+        <div className="flex flex-1 flex-col">
+          <Topbar />
 
-      <div className="flex flex-1 flex-col">
-
-        <Topbar />
-
-        <main className="flex-1 p-8">
-          {children}
-        </main>
-
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto w-full max-w-7xl px-6 py-8 lg:px-10">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-
     </div>
   );
 }

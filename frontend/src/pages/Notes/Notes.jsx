@@ -5,6 +5,7 @@ import NoteForm from "../../components/notes/NoteForm";
 import NoteCard from "../../components/notes/NoteCard";
 
 import toast from "react-hot-toast";
+import ConfirmModal from "../../components/ui/ConfirmModal";
 
 import {
   getNotes,
@@ -17,6 +18,8 @@ function Notes() {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingNote, setEditingNote] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     fetchNotes();
@@ -61,23 +64,20 @@ function Notes() {
   }
   };
 
-  const handleDeleteNote = async (id) => {
-  const confirmed = window.confirm(
-    "Are you sure you want to delete this note?"
-  );
+  const handleDeleteNote = async () => {
+    try {
+      await deleteNote(deleteId);
 
-  if (!confirmed) return;
+      toast.success("Note deleted successfully.");
 
-  try {
-    await deleteNote(id);
+      setShowDeleteModal(false);
+      setDeleteId(null);
 
-    toast.success("Note deleted successfully.");
-
-    await fetchNotes();
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to delete note.");
-  }
+      await fetchNotes();
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to delete note.");
+    }
   };
 
   return (
@@ -124,12 +124,25 @@ function Notes() {
                 key={note._id}
                 note={note}
                 onEdit={setEditingNote}
-                onDelete={handleDeleteNote}
+                onDelete={(id) => {
+                  setDeleteId(id);
+                  setShowDeleteModal(true);
+                }}
               />
             ))}
           </div>
         )}
       </div>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title="Delete Note"
+        message="Are you sure you want to delete this note?"
+        onConfirm={handleDeleteNote}
+        onCancel={() => {
+          setShowDeleteModal(false);
+          setDeleteId(null);
+        }}
+      />
     </DashboardLayout>
   );
 }

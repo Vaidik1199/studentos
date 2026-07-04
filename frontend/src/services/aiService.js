@@ -6,10 +6,13 @@ const getAuthConfig = () => ({
   },
 });
 
-export const askAI = async (prompt) => {
+export const askAI = async (prompt, history) => {
   const response = await api.post(
     "/ai",
-    { prompt },
+    { 
+      prompt,
+    history
+    },
     getAuthConfig()
   );
 

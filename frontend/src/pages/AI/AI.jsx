@@ -1,16 +1,34 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
+import ChatMessage from "../../components/ai/ChatMessage";
 import { askAI } from "../../services/aiService";
-
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import QuickPrompts from "../../components/ai/QuickPrompts";
 
 function AI() {
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem("studentos-ai-chat");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [prompt, setPrompt] = useState("");
-  const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem(
+        "studentos-ai-chat",
+        JSON.stringify(messages)
+        );
+    }, [messages]);
+
 
   const handleAskAI = async () => {
     if (!prompt.trim()) {
@@ -18,12 +36,38 @@ function AI() {
       return;
     }
 
+    const userMessage = {
+      role: "user",
+      content: prompt,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+
+    const currentPrompt = prompt;
+    setPrompt("");
+    setLoading(true);
+
     try {
-      setLoading(true);
+      const history = messages.map((message) => ({
+        role: message.role === "user" ? "user" : "model",
+        parts: [
+        {
+            text: message.content,
+        },
+    ],
+    }));
 
-      const result = await askAI(prompt);
+    const result = await askAI(
+        currentPrompt,
+        history
+    );
 
-      setResponse(result.data);
+      const aiMessage = {
+        role: "assistant",
+        content: result.data,
+      };
+
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error(error);
       toast.error("Failed to get AI response.");
@@ -34,53 +78,83 @@ function AI() {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-5xl space-y-6">
+      <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-5xl flex-col">
 
-        <div>
-          <h1 className="text-4xl font-bold text-white">
-            🤖 AI Study Assistant
-          </h1>
+        <div className="mb-6 flex items-center justify-between">
 
-          <p className="mt-2 text-slate-400">
-            Ask anything about programming, college, interviews or exams.
-          </p>
+          <div>
+            <h1 className="text-4xl font-bold text-white">
+              🤖 AI Study Assistant
+            </h1>
+
+            <p className="mt-2 text-slate-400">
+              Ask questions, generate notes, solve coding doubts and prepare for interviews.
+            </p>
+          </div>
+
+          <button
+            onClick={() => {
+              setMessages([]);
+              localStorage.removeItem("studentos-ai-chat");
+            }}
+            className="rounded-xl border border-red-500 px-4 py-2 text-red-400 hover:bg-red-500 hover:text-white"
+          >
+            Clear Chat
+          </button>
+
         </div>
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+        <div className="flex-1 space-y-5 rounded-2xl border border-slate-800 bg-slate-950 p-6">
+
+          {messages.length === 0 && (
+            <QuickPrompts
+                onSelect={(text) => setPrompt(text)}
+            />
+          )}
+
+          {messages.map((message, index) => (
+            <ChatMessage
+              key={index}
+              role={message.role}
+              content={message.content}
+            />
+          ))}
+
+          {loading && (
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-slate-300">
+              🤖 Thinking...
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+
+        </div>
+
+        <div className="mt-6 flex gap-4">
 
           <textarea
-            rows={6}
+            rows={2}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Ask AI anything..."
-            className="w-full resize-none rounded-xl border border-slate-700 bg-slate-950 p-4 text-white outline-none focus:border-indigo-500"
+            placeholder="Type your question..."
+            className="flex-1 resize-none rounded-xl border border-slate-700 bg-slate-900 p-4 text-white outline-none focus:border-indigo-500"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleAskAI();
+              }
+            }}
           />
 
           <button
             onClick={handleAskAI}
             disabled={loading}
-            className="mt-5 rounded-xl bg-indigo-600 px-8 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-indigo-600 px-8 font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50"
           >
-            {loading ? "Thinking..." : "Ask AI"}
+            Send
           </button>
 
         </div>
-
-        {response && (
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-
-            <h2 className="mb-4 text-2xl font-bold text-indigo-400">
-              AI Response
-            </h2>
-
-            <div className="prose prose-invert max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {response}
-                </ReactMarkdown>
-            </div>
-
-          </div>
-        )}
 
       </div>
     </DashboardLayout>

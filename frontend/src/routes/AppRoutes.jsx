@@ -7,6 +7,8 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Attendance from "../pages/Attendance/Attendance";
 import Notes from "../pages/Notes/Notes";
 import ProtectedRoute from "./ProtectedRoute";
+import Assignments from "../pages/Assignments/Assignments";
+import Analytics from "../pages/Analytics/Analytics";
 
 function AppRoutes() {
   return (
@@ -20,6 +22,10 @@ function AppRoutes() {
         <Route path="/register" element={<Register />} />
 
         <Route path="/notes"element={<Notes />}/>
+
+        <Route path="/assignments" element={<Assignments />} />
+
+        <Route path="/analytics" element={<Analytics />} />
         
         <Route
           path="/dashboard"

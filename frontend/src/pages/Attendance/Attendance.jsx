@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import AttendanceForm from "../../components/attendance/AttendanceForm";
 
+import toast from "react-hot-toast";
+
 import {
   getAttendance,
   createAttendance,
@@ -31,42 +33,50 @@ function Attendance() {
   };
 
   const handleCreateAttendance = async (data) => {
-    try {
+  try {
       await createAttendance(data);
+
+      toast.success("Attendance added successfully.");
+
       await fetchAttendance();
     } catch (error) {
       console.error(error);
-      alert("Failed to create attendance.");
+      toast.error("Failed to create attendance.");
     }
   };
 
   const handleUpdateAttendance = async (data) => {
-    try {
+  try {
       await updateAttendance(editingAttendance._id, data);
+
+      toast.success("Attendance updated successfully.");
 
       setEditingAttendance(null);
 
       await fetchAttendance();
-    } catch (error) {
+  } catch (error) {
       console.error(error);
-      alert("Failed to update attendance.");
-    }
+      toast.error("Failed to update attendance.");
+  }
   };
 
   const handleDeleteAttendance = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this attendance record?"
-    );
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this attendance record?"
+  );
 
-    if (!confirmed) return;
+  if (!confirmed) return;
 
-    try {
-      await deleteAttendance(id);
-      await fetchAttendance();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete attendance.");
-    }
+  try {
+    await deleteAttendance(id);
+
+    toast.success("Attendance deleted successfully.");
+
+    await fetchAttendance();
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to delete attendance.");
+  }
   };
 
   return (

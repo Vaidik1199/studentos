@@ -1,10 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useAuth } from "../../contexts/AuthContext";
+
 import AuthLayout from "../../components/auth/AuthLayout";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
+
+import toast from "react-hot-toast";
 
 import loginSchema from "../../validations/loginSchema";
 import { loginUser } from "../../services/authService";
@@ -25,15 +29,13 @@ function Login() {
     try {
       const response = await loginUser(data);
 
-      console.log("LOGIN RESPONSE:", response);
-
       login(response.token);
 
-      alert(response.message);
+      toast.success(response.message);
 
       navigate("/dashboard");
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message || "Something went wrong."
       );
     }

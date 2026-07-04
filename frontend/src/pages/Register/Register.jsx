@@ -6,6 +6,8 @@ import AuthLayout from "../../components/auth/AuthLayout";
 import Input from "../../components/ui/Input";
 import Button from "../../components/ui/Button";
 
+import toast from "react-hot-toast";
+
 import registerSchema from "../../validations/registerSchema";
 import { registerUser } from "../../services/authService";
 
@@ -26,11 +28,11 @@ function Register() {
 
       const response = await registerUser(userData);
 
-      alert(response.message);
+      toast.success(response.message);
 
       navigate("/login");
     } catch (error) {
-      alert(
+      toast.error(
         error.response?.data?.message || "Something went wrong."
       );
     }

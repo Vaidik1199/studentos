@@ -7,6 +7,8 @@ import attendanceRoutes from "./routes/attendanceRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import connectDB from "./config/db.js";
 import noteRoutes from "./routes/noteRoutes.js";
+import assignmentRoutes from "./routes/assignmentRoutes.js";
+import analyticsRoutes from "./routes/analyticsRoutes.js";
 
 dotenv.config();
 
@@ -21,6 +23,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/notes", noteRoutes);
+app.use("/api/assignments", assignmentRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 app.get("/", (_, res) => {
   res.json({

@@ -4,6 +4,8 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import NoteForm from "../../components/notes/NoteForm";
 import NoteCard from "../../components/notes/NoteCard";
 
+import toast from "react-hot-toast";
+
 import {
   getNotes,
   createNote,
@@ -32,42 +34,50 @@ function Notes() {
   };
 
   const handleCreateNote = async (data) => {
-    try {
-      await createNote(data);
-      await fetchNotes();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to create note.");
-    }
+  try {
+    await createNote(data);
+
+    toast.success("Note created successfully.");
+
+    await fetchNotes();
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to create note.");
+  }
   };
 
   const handleUpdateNote = async (data) => {
-    try {
-      await updateNote(editingNote._id, data);
+  try {
+    await updateNote(editingNote._id, data);
 
-      setEditingNote(null);
+    toast.success("Note updated successfully.");
 
-      await fetchNotes();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to update note.");
-    }
+    setEditingNote(null);
+
+    await fetchNotes();
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to update note.");
+  }
   };
 
   const handleDeleteNote = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this note?"
+  );
 
-    if (!confirmed) return;
+  if (!confirmed) return;
 
-    try {
-      await deleteNote(id);
-      await fetchNotes();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to delete note.");
-    }
+  try {
+    await deleteNote(id);
+
+    toast.success("Note deleted successfully.");
+
+    await fetchNotes();
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to delete note.");
+  }
   };
 
   return (

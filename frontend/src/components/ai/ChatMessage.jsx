@@ -5,9 +5,19 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import toast from "react-hot-toast";
+import { Copy, Save } from "lucide-react";
+
 import { saveAINote } from "../../services/noteService";
 
-function ChatMessage({ role, content }) {
+import { RotateCcw } from "lucide-react";
+
+function ChatMessage({
+  role,
+  content,
+  isLast,
+  onRegenerate,
+  loading,
+  }) {
   const handleSave = async () => {
     if (role !== "assistant") return;
 
@@ -41,16 +51,29 @@ function ChatMessage({ role, content }) {
       }`}
     >
       <div
-        className={`max-w-[80%] rounded-2xl px-5 py-4 shadow-lg ${
+        className={`max-w-[85%] rounded-2xl px-5 py-4 shadow-lg ${
           role === "user"
             ? "bg-indigo-600 text-white"
             : "border border-slate-800 bg-slate-900 text-slate-200"
         }`}
       >
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-sm font-semibold">
-            {role === "user" ? "👤 You" : "🤖 StudentOS AI"}
-          </span>
+        {/* Header */}
+        <div className="mb-3 flex items-center justify-between">
+          {role === "user" ? (
+            <span className="text-sm font-semibold">
+              👤 You
+            </span>
+          ) : (
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600">
+                🤖
+              </div>
+
+              <span className="text-sm font-semibold">
+                StudentOS AI
+              </span>
+            </div>
+          )}
 
           <span className="text-xs text-slate-400">
             {new Date().toLocaleTimeString([], {
@@ -60,13 +83,14 @@ function ChatMessage({ role, content }) {
           </span>
         </div>
 
+        {/* Markdown */}
         <div className="prose prose-invert max-w-none overflow-x-auto">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               table: ({ children }) => (
-                <div className="my-4 overflow-x-auto">
-                  <table className="w-full border-collapse border border-slate-700">
+                <div className="my-4 overflow-x-auto rounded-xl border border-slate-700">
+                  <table className="w-full border-collapse">
                     {children}
                   </table>
                 </div>
@@ -90,6 +114,42 @@ function ChatMessage({ role, content }) {
                 </td>
               ),
 
+              p: ({ children }) => (
+                <p className="mb-4 leading-8">
+                  {children}
+                </p>
+              ),
+
+              ul: ({ children }) => (
+                <ul className="mb-4 list-disc space-y-2 pl-6">
+                  {children}
+                </ul>
+              ),
+
+              ol: ({ children }) => (
+                <ol className="mb-4 list-decimal space-y-2 pl-6">
+                  {children}
+                </ol>
+              ),
+
+              h1: ({ children }) => (
+                <h1 className="mb-4 mt-6 text-3xl font-bold">
+                  {children}
+                </h1>
+              ),
+
+              h2: ({ children }) => (
+                <h2 className="mb-3 mt-6 text-2xl font-bold">
+                  {children}
+                </h2>
+              ),
+
+              h3: ({ children }) => (
+                <h3 className="mb-3 mt-5 text-xl font-semibold">
+                  {children}
+                </h3>
+              ),
+
               code({
                 inline,
                 className,
@@ -105,13 +165,19 @@ function ChatMessage({ role, content }) {
                     style={oneDark}
                     language={match[1]}
                     PreTag="div"
+                    customStyle={{
+                      borderRadius: "12px",
+                      padding: "18px",
+                      marginTop: "16px",
+                      marginBottom: "16px",
+                    }}
                     {...props}
                   >
                     {String(children).replace(/\n$/, "")}
                   </SyntaxHighlighter>
                 ) : (
                   <code
-                    className="rounded bg-slate-800 px-1 py-0.5"
+                    className="rounded bg-slate-800 px-1.5 py-1 text-indigo-300"
                     {...props}
                   >
                     {children}
@@ -124,23 +190,42 @@ function ChatMessage({ role, content }) {
           </ReactMarkdown>
         </div>
 
+        {/* Actions */}
         {role === "assistant" && (
-          <div className="mt-5 flex flex-wrap justify-end gap-3">
-            <button
-              onClick={handleCopy}
-              className="rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-600"
-            >
-              📋 Copy
-            </button>
+  <div className="mt-6 flex flex-wrap justify-end gap-3">
 
-            <button
-              onClick={handleSave}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
-            >
-              💾 Save to Notes
-            </button>
-          </div>
-        )}
+    <button
+      onClick={handleCopy}
+      className="flex items-center gap-2 rounded-lg bg-slate-700 px-4 py-2 text-sm font-medium text-white hover:bg-slate-600"
+    >
+      <Copy size={16} />
+      Copy
+    </button>
+
+    <button
+      onClick={handleSave}
+      className="flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+    >
+      <Save size={16} />
+      Save
+    </button>
+
+    {isLast && (
+      <button
+        onClick={onRegenerate}
+        disabled={loading}
+        className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+      <RotateCcw
+        size={16}
+        className={loading ? "animate-spin" : ""}
+      />
+      {loading ? "Generating..." : "Regenerate"}
+    </button>
+  )}
+
+    </div>
+    )}
       </div>
     </div>
   );

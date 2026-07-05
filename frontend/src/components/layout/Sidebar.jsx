@@ -8,9 +8,10 @@ import {
   Bot,
   LogOut,
   User,
+  X,
 } from "lucide-react";
 
-function Sidebar() {
+function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,141 +22,177 @@ function Sidebar() {
   const navItem =
     "flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200";
 
+  const closeSidebar = () => {
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  };
+
   return (
-    <aside className="flex h-screen w-72 flex-col border-r border-slate-800 bg-slate-900">
+    <>
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      {/* Logo */}
-      <div className="border-b border-slate-800 px-6 py-8">
-        <h1 className="text-3xl font-bold tracking-wide text-indigo-500">
-          StudentOS
-        </h1>
-
-        <p className="mt-2 text-sm text-slate-400">
-          Student Productivity
-        </p>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 space-y-2 px-4 py-6">
-
-        <NavLink
-          to="/dashboard"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <LayoutDashboard size={20} />
-          Dashboard
-        </NavLink>
-
-        <NavLink
-          to="/attendance"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <BookOpen size={20} />
-          Attendance
-        </NavLink>
-
-        <NavLink
-          to="/assignments"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <ClipboardList size={20} />
-          Assignments
-        </NavLink>
-
-        <NavLink
-          to="/notes"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <NotebookPen size={20} />
-          Notes
-        </NavLink>
-
-        <NavLink
-          to="/analytics"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <BarChart3 size={20} />
-          Analytics
-        </NavLink>
-
-        <NavLink
-          to="/ai"
-          className={({ isActive }) =>
-            `${navItem} ${
-              isActive
-                ? "bg-indigo-600 text-white shadow-lg"
-                : "text-slate-300 hover:bg-slate-800"
-            }`
-          }
-        >
-          <Bot size={20} />
-          AI Assistant
-        </NavLink>
-
-      </nav>
-
-      {/* User Section */}
-      <div className="border-t border-slate-800 p-4">
-
-        <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-800 p-3">
-
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600">
-            <User size={20} />
-          </div>
+      <aside
+        className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-800 px-6 py-8">
 
           <div>
-            <p className="font-semibold text-white">
-              Student
-            </p>
+            <h1 className="text-3xl font-bold tracking-wide text-indigo-500">
+              StudentOS
+            </h1>
 
-            <p className="text-xs text-slate-400">
-              Logged In
+            <p className="mt-2 text-sm text-slate-400">
+              Student Productivity
             </p>
           </div>
+
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="rounded-lg p-2 hover:bg-slate-800 lg:hidden"
+          >
+            <X size={22} />
+          </button>
 
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700"
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
+        {/* Navigation */}
+        <nav className="flex-1 space-y-2 px-4 py-6">
 
-      </div>
+          <NavLink
+            to="/dashboard"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <LayoutDashboard size={20} />
+            Dashboard
+          </NavLink>
 
-    </aside>
+          <NavLink
+            to="/attendance"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <BookOpen size={20} />
+            Attendance
+          </NavLink>
+
+          <NavLink
+            to="/assignments"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <ClipboardList size={20} />
+            Assignments
+          </NavLink>
+
+          <NavLink
+            to="/notes"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <NotebookPen size={20} />
+            Notes
+          </NavLink>
+
+          <NavLink
+            to="/analytics"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <BarChart3 size={20} />
+            Analytics
+          </NavLink>
+
+          <NavLink
+            to="/ai"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <Bot size={20} />
+            AI Assistant
+          </NavLink>
+
+        </nav>
+
+        {/* User */}
+        <div className="border-t border-slate-800 p-4">
+
+          <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-800 p-3">
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600">
+              <User size={20} />
+            </div>
+
+            <div>
+              <p className="font-semibold text-white">
+                Student
+              </p>
+
+              <p className="text-xs text-slate-400">
+                Logged In
+              </p>
+            </div>
+
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700"
+          >
+            <LogOut size={18} />
+            Logout
+          </button>
+
+        </div>
+
+      </aside>
+    </>
   );
 }
 

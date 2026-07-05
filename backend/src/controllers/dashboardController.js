@@ -1,7 +1,10 @@
 import Attendance from "../models/Attendance.js";
+import Assignment from "../models/Assignment.js";
+import Note from "../models/Note.js";
 
 export const getDashboardStats = async (req, res) => {
   try {
+    // Attendance
     const attendance = await Attendance.find({
       user: req.user._id,
     });
@@ -28,6 +31,28 @@ export const getDashboardStats = async (req, res) => {
             ).toFixed(1)
           );
 
+    // Assignments
+    const pendingAssignments =
+      await Assignment.countDocuments({
+        user: req.user._id,
+        status: "Pending",
+      });
+
+    const upcomingAssignments =
+      await Assignment.find({
+        user: req.user._id,
+        status: "Pending",
+      })
+        .sort({ dueDate: 1 })
+        .limit(5);
+
+    // Notes
+    const recentNotes = await Note.find({
+      user: req.user._id,
+    })
+      .sort({ updatedAt: -1 })
+      .limit(5);
+
     return res.json({
       success: true,
       data: {
@@ -35,6 +60,14 @@ export const getDashboardStats = async (req, res) => {
         attendedClasses,
         totalClasses,
         averageAttendance,
+
+        pendingAssignments,
+
+        recentNotes,
+
+        upcomingAssignments,
+
+        attendance,
       },
     });
   } catch (error) {

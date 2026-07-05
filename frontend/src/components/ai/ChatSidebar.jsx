@@ -23,7 +23,7 @@ function ChatSidebar({
             className={`w-full rounded-xl p-3 text-left transition ${
               currentChat === chat.id
                 ? "bg-indigo-600 text-white"
-                : "bg-slate-800 hover:bg-slate-700 text-slate-300"
+                : "bg-slate-800 text-slate-300 hover:bg-slate-700"
             }`}
           >
             {chat.title}

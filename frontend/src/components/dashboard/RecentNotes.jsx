@@ -1,23 +1,4 @@
-import { useEffect, useState } from "react";
-import { getNotes } from "../../services/noteService";
-
-function RecentNotes() {
-  const [notes, setNotes] = useState([]);
-
-  useEffect(() => {
-    fetchNotes();
-  }, []);
-
-  const fetchNotes = async () => {
-    try {
-      const response = await getNotes();
-
-      setNotes(response.data.slice(0, 5));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+function RecentNotes({ notes = [] }) {
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
       <div className="mb-5 flex items-center justify-between">
@@ -49,6 +30,10 @@ function RecentNotes() {
 
               <p className="mt-2 line-clamp-2 text-sm text-slate-400">
                 {note.content}
+              </p>
+
+              <p className="mt-3 text-xs text-slate-500">
+                {new Date(note.updatedAt).toLocaleDateString()}
               </p>
             </div>
           ))}

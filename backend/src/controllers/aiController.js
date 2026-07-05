@@ -23,8 +23,8 @@ IMPORTANT RULES:
 3. Use headings (##).
 4. Use bullet points whenever possible.
 5. Use numbered lists for steps.
-6. NEVER create markdown tables unless the user EXPLICITLY asks for a table.
-7. Keep paragraphs short (2-4 lines).
+6. NEVER create markdown tables unless the user explicitly asks for a table.
+7. Keep paragraphs short (2–4 lines).
 8. Highlight important words using **bold**.
 9. If explaining code:
    - Use proper code blocks.
@@ -40,8 +40,8 @@ IMPORTANT RULES:
 13. Avoid unnecessary long introductions.
 14. Do not use HTML.
 15. Always optimize the response for reading inside a web application.
-16. Leave one blank line between headings, paragraphs, bullet lists and sections to improve readability.
-17. Avoid writing long continuous paragraphs. Break information into small readable blocks.
+16. Leave one blank line between headings, paragraphs, bullet lists and sections.
+17. Avoid long continuous paragraphs.
 18. Keep each paragraph under 3 lines whenever possible.
 
 Student Question:
@@ -50,7 +50,7 @@ ${prompt}
 `;
 
     const chat = model.startChat({
-        history: req.body.history || [],
+      history: req.body.history || [],
     });
 
     const result = await chat.sendMessage(finalPrompt);
@@ -64,9 +64,47 @@ ${prompt}
   } catch (error) {
     console.error(error);
 
+    // Gemini quota exceeded
+    if (
+      error.status === 429 ||
+      error.message?.includes("429") ||
+      error.message?.includes("quota") ||
+      error.message?.includes("Too Many Requests")
+    ) {
+      return res.status(429).json({
+        success: false,
+        message:
+          "⚠️ Daily AI request limit reached. Please try again tomorrow or use another Account.",
+      });
+    }
+
+    // Invalid API Key
+    if (
+      error.message?.includes("API_KEY") ||
+      error.message?.includes("API key")
+    ) {
+      return res.status(401).json({
+        success: false,
+        message: "⚠️ Server Down.",
+      });
+    }
+
+    // Network Error
+    if (
+      error.message?.includes("fetch") ||
+      error.message?.includes("network")
+    ) {
+      return res.status(503).json({
+        success: false,
+        message:
+          "⚠️ Unable to connect to Gemini AI. Please try again later.",
+      });
+    }
+
+    // Default Error
     return res.status(500).json({
       success: false,
-      message: "Failed to generate AI response.",
+      message: "⚠️ Failed to generate AI response.",
     });
   }
 };

@@ -1,27 +1,34 @@
 import { useEffect, useState } from "react";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import StatCard from "../../components/dashboard/StatCard";
-import RecentActivity from "../../components/dashboard/RecentActivity";
-import QuickActions from "../../components/dashboard/QuickActions";
-import UpcomingDeadlines from "../../components/dashboard/UpcomingDeadlines";
-
-import { getDashboardStats } from "../../services/dashboardService";
-
-import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments";
-import RecentNotes from "../../components/dashboard/RecentNotes";
-import AttendanceAlert from "../../components/dashboard/AttendanceAlert";
-import AITip from "../../components/dashboard/AITip";
 import PageTransition from "../../components/common/PageTransition";
 import SkeletonCard from "../../components/common/SkeletonCard";
 
+import StatCard from "../../components/dashboard/StatCard";
+import AttendanceProgress from "../../components/dashboard/AttendanceProgress";
+import AttendanceAlert from "../../components/dashboard/AttendanceAlert";
+import RecentNotes from "../../components/dashboard/RecentNotes";
+import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments";
+
+import { getDashboardStats } from "../../services/dashboardService";
+
+import {
+  PercentSquareIcon,
+  BookOpen,
+  CheckCircle,
+  ClipboardList,
+} from "lucide-react";
+
 function Dashboard() {
-  const [stats, setStats] = useState({
-    averageAttendance: 0,
-    totalSubjects: 0,
-    attendedClasses: 0,
-    totalClasses: 0,
-  });
+  const [dashboard, setDashboard] = useState({
+  averageAttendance: 0,
+  totalSubjects: 0,
+  attendedClasses: 0,
+  pendingAssignments: 0,
+  recentNotes: [],
+  upcomingAssignments: [],
+  attendanceAlert: null,
+});
 
   const [loading, setLoading] = useState(true);
 
@@ -32,8 +39,7 @@ function Dashboard() {
   const fetchDashboardStats = async () => {
     try {
       const response = await getDashboardStats();
-
-      setStats(response.data);
+      setDashboard(response.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -44,77 +50,91 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <PageTransition>
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-bold text-white">
-            Dashboard
-          </h1>
+        <div className="space-y-8">
 
-          <p className="mt-2 text-slate-400">
-            Here's an overview of your academic progress.
-          </p>
-        </div>
+          <div>
+            <h1 className="text-4xl font-bold text-white">
+              Dashboard
+            </h1>
 
-        {loading ? (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
-            <SkeletonCard />
+            <p className="mt-2 text-slate-400">
+              Here's your academic overview for today.
+            </p>
           </div>
-          ) : (
-          <>
+
+          {loading ? (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-              <StatCard
-                title="Attendance"
-                value={`${stats.averageAttendance}%`}
-                subtitle="Overall"
-                color="text-emerald-400"
-              />
-
-              <StatCard
-                title="Subjects"
-                value={stats.totalSubjects}
-                subtitle="Tracked"
-                color="text-indigo-400"
-              />
-
-              <StatCard
-                title="Present"
-                value={stats.attendedClasses}
-                subtitle="Classes"
-                color="text-yellow-400"
-              />
-
-              <StatCard
-                title="Total"
-                value={stats.totalClasses}
-                subtitle="Classes"
-                color="text-pink-400"
-              />
-
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
             </div>
+          ) : (
+            <>
+              {/* Stats */}
 
-            <div className="grid gap-6 lg:grid-cols-2">
-              <RecentActivity />
-              <QuickActions />
-            </div>
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-            <div className="grid gap-6 lg:grid-cols-2">
-              <UpcomingAssignments />
-              <RecentNotes />
-            </div>
+                <StatCard
+                  title="Attendance"
+                  value={`${dashboard.averageAttendance}%`}
+                  subtitle="Overall"
+                  color="text-emerald-400"
+                  icon={<PercentSquareIcon />}
+                />
 
-            <div className="grid gap-6 lg:grid-cols-2">
-              <AttendanceAlert />
-              <AITip />
-            </div>
+                <StatCard
+                  title="Subjects"
+                  value={dashboard.totalSubjects}
+                  subtitle="Tracked"
+                  color="text-indigo-400"
+                  icon={<BookOpen />}
+                />
 
-            <UpcomingDeadlines />
-          </>
-        )}
-      </div>
+                <StatCard
+                  title="Present"
+                  value={dashboard.attendedClasses}
+                  subtitle="Classes"
+                  color="text-yellow-400"
+                  icon={<CheckCircle />}
+                />
+
+                <StatCard
+                  title="Assignments"
+                  value={dashboard.pendingAssignments ?? 0}
+                  subtitle="Pending"
+                  color="text-pink-400"
+                  icon={<ClipboardList />}
+                />
+
+              </div>
+
+              {/* Attendance */}
+
+              <div className="grid gap-6 lg:grid-cols-2">
+
+                <AttendanceProgress
+                  percentage={dashboard.averageAttendance}
+                />
+
+                <AttendanceAlert attendance={dashboard.attendance || []} />
+
+              </div>
+
+              {/* Notes & Assignments */}
+
+              <div className="grid gap-6 lg:grid-cols-2">
+
+                <RecentNotes notes={dashboard.recentNotes || []} />
+
+                <UpcomingAssignments assignments={dashboard.upcomingAssignments || []} />
+
+              </div>
+
+            </>
+          )}
+
+        </div>
       </PageTransition>
     </DashboardLayout>
   );

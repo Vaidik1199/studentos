@@ -1,8 +1,13 @@
-import { Search, Bell, Moon } from "lucide-react";
+import {
+  Search,
+  Bell,
+  Moon,
+  Menu,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-function Topbar() {
+function Topbar({ setSidebarOpen }) {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -20,27 +25,36 @@ function Topbar() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
-      <div className="flex h-20 items-center justify-between px-8">
+      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Left */}
+        <div className="flex items-center gap-4">
 
-        <div>
-          <h2 className="text-2xl font-bold text-white">
-            {greeting} 👋
-          </h2>
+          {/* Mobile Menu */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800 lg:hidden"
+          >
+            <Menu size={22} />
+          </button>
 
-          <p className="mt-1 text-sm text-slate-400">
-            Ready to study today?
-          </p>
+          <div>
+            <h2 className="text-xl font-bold text-white sm:text-2xl">
+              {greeting} 👋
+            </h2>
+
+            <p className="mt-1 hidden text-sm text-slate-400 sm:block">
+              Ready to study today?
+            </p>
+          </div>
+
         </div>
 
         {/* Right */}
-
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
 
           {/* Search */}
-
-          <div className="relative hidden lg:block">
+          <div className="relative hidden xl:block">
 
             <Search
               size={18}
@@ -56,13 +70,11 @@ function Topbar() {
           </div>
 
           {/* Theme */}
-
           <button className="rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800">
             <Moon size={20} />
           </button>
 
           {/* Notification */}
-
           <button className="relative rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800">
 
             <Bell size={20} />
@@ -72,16 +84,14 @@ function Topbar() {
           </button>
 
           {/* Avatar */}
-
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
             V
           </div>
 
           {/* Logout */}
-
           <button
             onClick={handleLogout}
-            className="rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700"
+            className="hidden rounded-xl bg-red-600 px-5 py-2.5 font-semibold text-white transition hover:bg-red-700 md:block"
           >
             Logout
           </button>

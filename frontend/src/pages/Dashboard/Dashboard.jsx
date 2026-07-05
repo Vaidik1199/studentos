@@ -8,6 +8,11 @@ import UpcomingDeadlines from "../../components/dashboard/UpcomingDeadlines";
 
 import { getDashboardStats } from "../../services/dashboardService";
 
+import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments";
+import RecentNotes from "../../components/dashboard/RecentNotes";
+import AttendanceAlert from "../../components/dashboard/AttendanceAlert";
+import AITip from "../../components/dashboard/AITip";
+
 function Dashboard() {
   const [stats, setStats] = useState({
     averageAttendance: 0,
@@ -88,6 +93,16 @@ function Dashboard() {
             <div className="grid gap-6 lg:grid-cols-2">
               <RecentActivity />
               <QuickActions />
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <UpcomingAssignments />
+              <RecentNotes />
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <AttendanceAlert />
+              <AITip />
             </div>
 
             <UpcomingDeadlines />

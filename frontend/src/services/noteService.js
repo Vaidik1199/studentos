@@ -43,3 +43,13 @@ export const deleteNote = async (id) => {
 
   return response.data;
 };
+
+export const saveAINote = async (title, content) => {
+  const response = await api.post(
+    "/notes/from-ai",
+    { title, content },
+    getAuthConfig()
+  );
+
+  return response.data;
+};

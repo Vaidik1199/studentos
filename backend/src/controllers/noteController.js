@@ -126,3 +126,36 @@ export const deleteNote = async (req, res) => {
     });
   }
 };
+
+export const saveAINote = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({
+        success: false,
+        message: "Content is required.",
+      });
+    }
+
+    const note = await Note.create({
+      user: req.user._id,
+      title: title || `AI Note - ${new Date().toLocaleDateString()}`,
+      content,
+      pinned: false,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "AI note saved successfully.",
+      data: note,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to save AI note.",
+    });
+  }
+};

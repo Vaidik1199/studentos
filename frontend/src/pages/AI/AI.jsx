@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
-
+import SuggestedQuestions from "../../components/ai/SuggestedQuestions";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import ChatMessage from "../../components/ai/ChatMessage";
 import { askAI } from "../../services/aiService";
 import QuickPrompts from "../../components/ai/QuickPrompts";
+import TypingIndicator from "../../components/ai/TypingIndicator";
 
 function AI() {
   const [messages, setMessages] = useState(() => {
@@ -13,6 +14,7 @@ function AI() {
   });
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
+  const [lastPrompt, setLastPrompt] = useState("");
 
   const messagesEndRef = useRef(null);
 
@@ -46,6 +48,7 @@ function AI() {
     const currentPrompt = prompt;
     setPrompt("");
     setLoading(true);
+    setLastPrompt(currentPrompt);
 
     try {
       const history = messages.map((message) => ({
@@ -107,9 +110,14 @@ function AI() {
         <div className="flex-1 space-y-5 rounded-2xl border border-slate-800 bg-slate-950 p-6">
 
           {messages.length === 0 && (
-            <QuickPrompts
+            <>
+              <QuickPrompts
                 onSelect={(text) => setPrompt(text)}
-            />
+              />
+              <SuggestedQuestions
+                onSelect={(text) => setPrompt(text)}
+              />
+            </>
           )}
 
           {messages.map((message, index) => (
@@ -120,11 +128,7 @@ function AI() {
             />
           ))}
 
-          {loading && (
-            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-slate-300">
-              🤖 Thinking...
-            </div>
-          )}
+          {loading && <TypingIndicator />}
 
           <div ref={messagesEndRef} />
 

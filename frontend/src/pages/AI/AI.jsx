@@ -6,6 +6,7 @@ import ChatMessage from "../../components/ai/ChatMessage";
 import { askAI } from "../../services/aiService";
 import QuickPrompts from "../../components/ai/QuickPrompts";
 import TypingIndicator from "../../components/ai/TypingIndicator";
+import PageTransition from "../../components/common/PageTransition";
 
 function AI() {
   const [messages, setMessages] = useState(() => {
@@ -81,6 +82,7 @@ function AI() {
 
   return (
     <DashboardLayout>
+      <PageTransition>
       <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-5xl flex-col">
 
         <div className="mb-6 flex items-center justify-between">
@@ -161,6 +163,7 @@ function AI() {
         </div>
 
       </div>
+      </PageTransition>
     </DashboardLayout>
   );
 }

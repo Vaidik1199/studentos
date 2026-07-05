@@ -6,6 +6,8 @@ import AssignmentCard from "../../components/assignments/AssignmentCard";
 
 import toast from "react-hot-toast";
 import ConfirmModal from "../../components/ui/ConfirmModal";
+import PageTransition from "../../components/common/PageTransition";
+import SkeletonCard from "../../components/common/SkeletonCard";
 
 import {
   getAssignments,
@@ -105,6 +107,7 @@ function Assignments() {
 
   return (
     <DashboardLayout>
+      <PageTransition>
       <div className="space-y-8">
 
         <div>
@@ -128,9 +131,11 @@ function Assignments() {
         />
 
         {loading ? (
-          <p className="text-slate-400">
-            Loading assignments...
-          </p>
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
         ) : assignments.length === 0 ? (
           <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center">
             <h2 className="text-xl font-semibold text-white">
@@ -169,6 +174,7 @@ function Assignments() {
           setDeleteId(null);
         }}
       />
+      </PageTransition>
     </DashboardLayout>
   );
 }

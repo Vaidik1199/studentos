@@ -12,6 +12,8 @@ import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments"
 import RecentNotes from "../../components/dashboard/RecentNotes";
 import AttendanceAlert from "../../components/dashboard/AttendanceAlert";
 import AITip from "../../components/dashboard/AITip";
+import PageTransition from "../../components/common/PageTransition";
+import SkeletonCard from "../../components/common/SkeletonCard";
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -41,6 +43,7 @@ function Dashboard() {
 
   return (
     <DashboardLayout>
+      <PageTransition>
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold text-white">
@@ -53,10 +56,13 @@ function Dashboard() {
         </div>
 
         {loading ? (
-          <p className="text-slate-400">
-            Loading dashboard...
-          </p>
-        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
+          ) : (
           <>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
@@ -109,6 +115,7 @@ function Dashboard() {
           </>
         )}
       </div>
+      </PageTransition>
     </DashboardLayout>
   );
 }

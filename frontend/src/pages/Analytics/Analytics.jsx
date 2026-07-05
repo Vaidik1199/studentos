@@ -9,6 +9,8 @@ import AssignmentChart from "../../components/analytics/AssignmentChart";
 import { getAnalytics } from "../../services/analyticsService";
 
 import toast from "react-hot-toast";
+import PageTransition from "../../components/common/PageTransition";
+import SkeletonCard from "../../components/common/SkeletonCard";
 
 function Analytics() {
   const [analytics, setAnalytics] = useState(null);
@@ -33,15 +35,21 @@ function Analytics() {
   if (loading) {
     return (
       <DashboardLayout>
-        <p className="text-slate-400">
-          Loading Analytics...
-        </p>
+        <PageTransition>
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+        </PageTransition>
       </DashboardLayout>
     );
   }
 
   return (
     <DashboardLayout>
+      <PageTransition>
       <div className="space-y-8">
         <div>
           <h1 className="text-4xl font-bold text-white">
@@ -93,6 +101,7 @@ function Analytics() {
           />
         </div>
       </div>
+      </PageTransition>
     </DashboardLayout>
   );
 }

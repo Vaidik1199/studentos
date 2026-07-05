@@ -9,7 +9,7 @@ import Notes from "../pages/Notes/Notes";
 import Assignments from "../pages/Assignments/Assignments";
 import Analytics from "../pages/Analytics/Analytics";
 import AI from "../pages/AI/AI";
-
+import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
@@ -85,6 +85,8 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
 
       </Routes>
     </BrowserRouter>

@@ -57,18 +57,16 @@ function Analytics() {
           {/* Heading */}
 
           <div>
-            <h1 className="text-4xl font-bold text-white">
-              Analytics
-            </h1>
+            <h1 className="text-4xl font-bold text-white">Analytics</h1>
 
             <p className="mt-2 text-slate-400">
-              Track your academic performance.
+              Track your academic performance and progress.
             </p>
           </div>
 
           {/* KPI Cards */}
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             <AnalyticsCard
               title="Attendance"
               value={`${analytics.attendance.averageAttendance}%`}
@@ -100,15 +98,13 @@ function Analytics() {
 
           {/* Charts */}
 
-          <div className="grid gap-6 lg:grid-cols-2">
-            <AttendanceChart
-              attendance={analytics.attendance}
-            />
+          <div className="grid gap-6 xl:grid-cols-2">
+            <AttendanceChart attendance={analytics.attendance} />
 
-            <AssignmentChart
-              assignments={analytics.assignments}
-            />
+            <AssignmentChart assignments={analytics.assignments} />
           </div>
+
+          {/* Subject Attendance + Insights */}
 
           {/* Insights */}
 

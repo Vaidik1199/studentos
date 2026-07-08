@@ -1,26 +1,45 @@
-import {
-  Search,
-  Bell,
-  Moon,
-  Menu,
-  User,
-  LogOut,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, User, LogOut, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Topbar({ setSidebarOpen }) {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   const [showProfile, setShowProfile] = useState(false);
+  const profileRef = useRef(null);
+
+  // ✅ Added user data helper variables from localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const fullName = user.fullName || "Student";
+  const firstName = fullName.split(" ")[0];
+  const initials = fullName
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target)
+      ) {
+        setShowProfile(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () =>
+      document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const hours = new Date().getHours();
 
@@ -32,9 +51,10 @@ function Topbar({ setSidebarOpen }) {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
       <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* LEFT */}
 
+        {/* Left */}
         <div className="flex items-center gap-4">
+
           <button
             onClick={() => setSidebarOpen(true)}
             className="rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800 lg:hidden"
@@ -51,96 +71,79 @@ function Topbar({ setSidebarOpen }) {
               Ready to study today?
             </p>
           </div>
+
         </div>
 
-        {/* RIGHT */}
+        {/* Right */}
+        <div
+          ref={profileRef}
+          className="relative"
+        >
+          <button
+            onClick={() => setShowProfile(!showProfile)}
+            className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 transition hover:bg-slate-800"
+          >
+            {/* ✅ Replaced "V" with initials */}
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
+              {initials}
+            </div>
 
-        <div className="flex items-center gap-3">
-          {/* Search */}
+            {/* ✅ Replaced static text with firstName and welcome message */}
+            <div className="hidden text-left lg:block">
+              <p className="font-semibold text-white">
+                {firstName}
+              </p>
 
-          <div className="relative hidden xl:block">
-            <Search
+              <p className="text-xs text-slate-400">
+                Welcome Back
+              </p>
+            </div>
+
+            <ChevronDown
               size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+              className={`hidden text-slate-400 transition duration-200 lg:block ${
+                showProfile ? "rotate-180" : ""
+              }`}
             />
-
-            <input
-              type="text"
-              readOnly
-              placeholder="Search StudentOS... (Ctrl + K)"
-              onClick={() =>
-                window.dispatchEvent(new Event("open-command-palette"))
-              }
-              className="w-80 cursor-pointer rounded-2xl border border-slate-700 bg-slate-900 py-3 pl-11 pr-4 text-white outline-none transition focus:border-indigo-500"
-            />
-          </div>
-
-          {/* Theme */}
-
-          <button className="rounded-2xl bg-slate-900 p-3 transition hover:bg-slate-800">
-            <Moon size={20} />
           </button>
 
-          {/* Notification */}
+          {showProfile && (
+            <div className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
 
-          <button className="relative rounded-2xl bg-slate-900 p-3 transition hover:bg-slate-800">
-            <Bell size={20} />
+              <div className="border-b border-slate-800 p-5">
+                <div className="flex items-center gap-3">
 
-            <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-              3
-            </span>
-          </button>
+                  {/* ✅ Replaced static "V" inside dropdown with initials */}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
+                    {initials}
+                  </div>
 
-          {/* Profile */}
+                  {/* ✅ Replaced static dropdown text with fullName and email */}
+                  <div>
+                    <p className="font-semibold text-white">
+                      {fullName}
+                    </p>
 
-          <div className="relative">
-            <button
-              onClick={() => setShowProfile(!showProfile)}
-              className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 transition hover:bg-slate-800"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
-                V
+                    <p className="text-sm text-slate-400">
+                      {user.email}
+                    </p>
+                  </div>
+
+                </div>
               </div>
 
-              <div className="hidden text-left lg:block">
-                <p className="font-semibold text-white">Student</p>
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 px-5 py-4 text-left text-red-400 transition hover:bg-red-500/10"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
 
-                <p className="text-xs text-slate-400">Welcome back</p>
-              </div>
-
-              <ChevronDown
-                size={18}
-                className={`hidden text-slate-400 transition lg:block ${
-                  showProfile ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {showProfile && (
-              <div className="absolute right-0 mt-3 w-60 rounded-2xl border border-slate-700 bg-slate-900 p-2 shadow-2xl">
-                <button className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition hover:bg-slate-800">
-                  <User size={18} />
-                  Profile
-                </button>
-
-                <button className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition hover:bg-slate-800">
-                  <Moon size={18} />
-                  Theme
-                </button>
-
-                <hr className="my-2 border-slate-700" />
-
-                <button
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-red-400 transition hover:bg-red-500/10"
-                >
-                  <LogOut size={18} />
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
+
       </div>
     </header>
   );

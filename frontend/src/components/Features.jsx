@@ -1,21 +1,21 @@
 const features = [
   {
-    title: "AI Study Assistant",
+    icon: "🧠",
+    title: "AI Learning Companion",
     description:
-      "Upload your study material and instantly generate summaries, quizzes and revision notes.",
-    icon: "🤖",
+      "Ask questions, generate revision notes, create personalized study plans and get instant explanations powered by AI.",
   },
   {
-    title: "Academic Workspace",
+    icon: "🎯",
+    title: "Academic Command Center",
     description:
-      "Keep your attendance, assignments, notes and schedule organized in one place.",
-    icon: "📚",
+      "Manage attendance, assignments, notes and study plans from one organized workspace built specifically for college students.",
   },
   {
-    title: "Track Your Progress",
+    icon: "📊",
+    title: "Smart Progress Tracking",
     description:
-      "Monitor attendance, upcoming deadlines and study consistency with insightful dashboards.",
-    icon: "📈",
+      "Visualize attendance trends, monitor pending assignments and stay on top of your academic performance with real-time analytics.",
   },
 ];
 

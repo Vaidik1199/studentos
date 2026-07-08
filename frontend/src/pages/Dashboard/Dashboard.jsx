@@ -12,10 +12,6 @@ import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments"
 
 import { getDashboardStats } from "../../services/dashboardService";
 
-import WeeklyGoals from "../../components/dashboard/WeeklyGoals";
-
-import TodaysFocus from "../../components/dashboard/TodaysFocus";
-
 import {
   PercentSquareIcon,
   BookOpen,
@@ -108,8 +104,6 @@ function Dashboard() {
                 />
               </div>
 
-              <TodaysFocus />
-
               {/* Attendance */}
 
               <div className="grid gap-6 xl:grid-cols-3">
@@ -132,10 +126,6 @@ function Dashboard() {
                 />
 
               </div>
-
-              <div className="grid gap-6">
-  <WeeklyGoals />
-</div>
             </>
           )}
         </div>

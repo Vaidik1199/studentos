@@ -33,11 +33,13 @@ function PerformanceSummary() {
         percentage:
           item.totalClasses === 0
             ? 0
-            : (
-                (item.attendedClasses /
-                  item.totalClasses) *
-                100
-              ).toFixed(1),
+            : Number(
+                (
+                  (item.attendedClasses /
+                    item.totalClasses) *
+                  100
+                ).toFixed(1)
+              ),
       }));
 
       const best = [...subjects].sort(
@@ -61,7 +63,12 @@ function PerformanceSummary() {
       const average =
         total === 0
           ? 0
-          : ((attended / total) * 100).toFixed(1);
+          : Number(
+              (
+                (attended / total) *
+                100
+              ).toFixed(1)
+            );
 
       setSummary({
         best,
@@ -75,75 +82,114 @@ function PerformanceSummary() {
     }
   };
 
+  const cards = [
+    {
+      title: "Best Subject",
+      value: summary.best?.subject || "--",
+      extra: `${summary.best?.percentage || 0}%`,
+      icon: Trophy,
+      color:
+        "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    },
+    {
+      title: "Needs Attention",
+      value: summary.worst?.subject || "--",
+      extra: `${summary.worst?.percentage || 0}%`,
+      icon: AlertTriangle,
+      color:
+        "bg-red-500/10 text-red-400 border-red-500/20",
+    },
+    {
+      title: "Overall Attendance",
+      value: `${summary.average}%`,
+      extra:
+        summary.average >= 75
+          ? "On Track"
+          : "Needs Improvement",
+      icon: Target,
+      color:
+        "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+    },
+    {
+      title: "Classes Attended",
+      value: `${summary.attended}/${summary.total}`,
+      extra: "Present / Total",
+      icon: BookOpen,
+      color:
+        "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+    },
+  ];
+
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
-      <h2 className="mb-6 text-xl font-bold text-white">
-        📊 Performance Summary
-      </h2>
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
 
-      <div className="space-y-5">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-white">
+          Performance Summary
+        </h2>
 
-        <div className="flex items-center gap-4 rounded-xl bg-slate-800 p-4">
-          <Trophy className="text-yellow-400" />
-          <div>
-            <p className="text-sm text-slate-400">
-              Best Subject
-            </p>
-
-            <h3 className="font-bold text-white">
-              {summary.best?.subject || "--"}
-            </h3>
-
-            <span className="text-emerald-400">
-              {summary.best?.percentage || 0}%
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 rounded-xl bg-slate-800 p-4">
-          <AlertTriangle className="text-red-400" />
-          <div>
-            <p className="text-sm text-slate-400">
-              Needs Attention
-            </p>
-
-            <h3 className="font-bold text-white">
-              {summary.worst?.subject || "--"}
-            </h3>
-
-            <span className="text-red-400">
-              {summary.worst?.percentage || 0}%
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 rounded-xl bg-slate-800 p-4">
-          <Target className="text-indigo-400" />
-          <div>
-            <p className="text-sm text-slate-400">
-              Overall Attendance
-            </p>
-
-            <h3 className="font-bold text-white">
-              {summary.average}%
-            </h3>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 rounded-xl bg-slate-800 p-4">
-          <BookOpen className="text-cyan-400" />
-          <div>
-            <p className="text-sm text-slate-400">
-              Classes Attended
-            </p>
-
-            <h3 className="font-bold text-white">
-              {summary.attended} / {summary.total}
-            </h3>
-          </div>
-        </div>
-
+        <p className="mt-1 text-sm text-slate-400">
+          Quick overview of your academic performance.
+        </p>
       </div>
+
+      {summary.total === 0 ? (
+        <div className="flex h-72 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-700 bg-slate-950">
+
+          <div className="text-6xl">📈</div>
+
+          <h3 className="mt-5 text-xl font-semibold text-white">
+            No Performance Data
+          </h3>
+
+          <p className="mt-2 text-center text-slate-400">
+            Add attendance records to view your performance summary.
+          </p>
+
+        </div>
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2">
+
+          {cards.map((card) => {
+            const Icon = card.icon;
+
+            return (
+              <div
+                key={card.title}
+                className="rounded-2xl border border-slate-800 bg-slate-950 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500 hover:shadow-xl"
+              >
+                <div className="flex items-start justify-between">
+
+                  <div>
+
+                    <p className="text-sm text-slate-400">
+                      {card.title}
+                    </p>
+
+                    <h3 className="mt-2 text-xl font-bold text-white">
+                      {card.value}
+                    </h3>
+
+                    <p className="mt-2 text-sm text-slate-400">
+                      {card.extra}
+                    </p>
+
+                  </div>
+
+                  <div
+                    className={`rounded-2xl border p-3 ${card.color}`}
+                  >
+                    <Icon size={24} />
+                  </div>
+
+                </div>
+              </div>
+            );
+          })}
+
+        </div>
+      )}
+
     </div>
   );
 }

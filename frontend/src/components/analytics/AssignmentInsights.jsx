@@ -28,87 +28,151 @@ function AssignmentInsights() {
 
       const today = new Date();
 
+      const completed = assignments.filter(
+        (a) => a.status === "Completed"
+      ).length;
+
+      const pending = assignments.filter(
+        (a) => a.status === "Pending"
+      ).length;
+
+      const overdue = assignments.filter(
+        (a) =>
+          a.status === "Pending" &&
+          new Date(a.dueDate) < today
+      ).length;
+
+      const high = assignments.filter(
+        (a) => a.priority === "High"
+      ).length;
+
       setStats({
         total: assignments.length,
-        completed: assignments.filter(
-          (a) => a.status === "Completed"
-        ).length,
-        pending: assignments.filter(
-          (a) => a.status === "Pending"
-        ).length,
-        overdue: assignments.filter(
-          (a) =>
-            a.status === "Pending" &&
-            new Date(a.dueDate) < today
-        ).length,
-        high: assignments.filter(
-          (a) => a.priority === "High"
-        ).length,
+        completed,
+        pending,
+        overdue,
+        high,
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const items = [
+  const completion =
+    stats.total === 0
+      ? 0
+      : Math.round((stats.completed / stats.total) * 100);
+
+  const cards = [
     {
       title: "Completed",
       value: stats.completed,
-      icon: <CheckCircle2 size={22} />,
-      color: "text-emerald-400",
-      bg: "bg-emerald-500/10",
+      icon: CheckCircle2,
+      color: "emerald",
     },
     {
       title: "Pending",
       value: stats.pending,
-      icon: <Clock3 size={22} />,
-      color: "text-yellow-400",
-      bg: "bg-yellow-500/10",
+      icon: Clock3,
+      color: "yellow",
     },
     {
       title: "High Priority",
       value: stats.high,
-      icon: <AlertTriangle size={22} />,
-      color: "text-red-400",
-      bg: "bg-red-500/10",
+      icon: AlertTriangle,
+      color: "red",
     },
     {
       title: "Overdue",
       value: stats.overdue,
-      icon: <ListTodo size={22} />,
-      color: "text-indigo-400",
-      bg: "bg-indigo-500/10",
+      icon: ListTodo,
+      color: "indigo",
     },
   ];
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
-      <h2 className="mb-6 text-xl font-bold text-white">
-        📋 Assignment Insights
-      </h2>
+    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
 
-      <div className="grid grid-cols-2 gap-4">
-        {items.map((item) => (
-          <div
-            key={item.title}
-            className={`rounded-xl ${item.bg} p-5`}
-          >
-            <div className={`${item.color}`}>
-              {item.icon}
-            </div>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white">
+          📋 Assignment Insights
+        </h2>
 
-            <p className="mt-3 text-sm text-slate-400">
-              {item.title}
-            </p>
-
-            <h3
-              className={`mt-1 text-3xl font-bold ${item.color}`}
-            >
-              {item.value}
-            </h3>
-          </div>
-        ))}
+        <p className="mt-1 text-sm text-slate-400">
+          Overview of your assignment progress.
+        </p>
       </div>
+
+      <div className="space-y-4">
+
+        {cards.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <div
+              key={item.title}
+              className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-800/60 p-4 transition hover:border-slate-700"
+            >
+              <div className="flex items-center gap-4">
+
+                <div className={`rounded-xl bg-${item.color}-500/10 p-3`}>
+                  <Icon className={`text-${item.color}-400`} size={22} />
+                </div>
+
+                <div>
+                  <p className="text-sm text-slate-400">
+                    {item.title}
+                  </p>
+
+                  <h3 className="text-lg font-semibold text-white">
+                    {item.value}
+                  </h3>
+                </div>
+
+              </div>
+            </div>
+          );
+        })}
+
+      </div>
+
+      <div className="mt-8 border-t border-slate-800 pt-6">
+
+        <div className="mb-3 flex items-center justify-between">
+
+          <span className="font-medium text-white">
+            Completion Rate
+          </span>
+
+          <span className="font-bold text-indigo-400">
+            {completion}%
+          </span>
+
+        </div>
+
+        <div className="h-3 overflow-hidden rounded-full bg-slate-800">
+
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 transition-all duration-700"
+            style={{
+              width: `${completion}%`,
+            }}
+          />
+
+        </div>
+
+        <p className="mt-4 text-sm text-slate-400">
+          {stats.total === 0
+            ? "No assignments available."
+            : completion >= 80
+            ? "🎉 Excellent progress! Keep it up."
+            : completion >= 50
+            ? "👍 You're making good progress."
+            : "⚠️ Try completing more pending assignments."}
+        </p>
+
+      </div>
+
     </div>
   );
 }

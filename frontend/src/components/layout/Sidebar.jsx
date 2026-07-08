@@ -40,7 +40,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 flex h-screen w-72 flex-col border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-hidden border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -62,8 +62,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-2 px-4 py-6">
+        {/* Navigation - ✅ Updated <nav> classes with no-scrollbar */}
+        <nav className="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
           <NavLink
             to="/dashboard"
             onClick={closeSidebar}
@@ -185,8 +185,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </NavLink>
         </nav>
 
-        {/* User */}
-        <div className="border-t border-slate-800 p-4">
+        {/* User Section */}
+        <div className="mt-auto border-t border-slate-800 bg-slate-900 p-4">
           <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-800 p-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600">
               <User size={20} />
@@ -201,7 +201,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
           <button
             onClick={handleLogout}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700 active:scale-[0.98]"
           >
             <LogOut size={18} />
             Logout

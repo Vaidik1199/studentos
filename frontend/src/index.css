@@ -18,3 +18,14 @@
 .color-github-4 {
   fill: #22d3ee;
 }
+
+/* Hide scrollbar */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

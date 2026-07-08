@@ -4,14 +4,20 @@ export const createAttendance = async (req, res) => {
   try {
     const { subject, attendedClasses, totalClasses } = req.body;
 
+    if (Number(attendedClasses) > Number(totalClasses)) {
+      return res.status(400).json({
+        success: false,
+        message: "Attended classes cannot exceed total classes.",
+      });
+    }
+
     const subjects = await Attendance.find({
       user: req.user._id,
     });
 
     const duplicate = subjects.find(
       (item) =>
-        item.subject.trim().toLowerCase() ===
-        subject.trim().toLowerCase()
+        item.subject.trim().toLowerCase() === subject.trim().toLowerCase(),
     );
 
     if (duplicate) {
@@ -87,7 +93,7 @@ export const updateAttendance = async (req, res) => {
     const duplicate = subjects.find(
       (item) =>
         item.subject.trim().toLowerCase() ===
-        req.body.subject.trim().toLowerCase()
+        req.body.subject.trim().toLowerCase(),
     );
 
     if (duplicate) {
@@ -97,7 +103,12 @@ export const updateAttendance = async (req, res) => {
       });
     }
 
-    attendance.subject = req.body.subject.trim();
+    if (Number(req.body.attendedClasses) > Number(req.body.totalClasses)) {
+      return res.status(400).json({
+        success: false,
+        message: "Attended classes cannot exceed total classes.",
+      });
+    }
     attendance.attendedClasses = req.body.attendedClasses;
     attendance.totalClasses = req.body.totalClasses;
 

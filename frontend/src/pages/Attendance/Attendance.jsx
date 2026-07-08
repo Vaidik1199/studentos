@@ -39,6 +39,10 @@ function Attendance() {
       setAttendance(response.data);
     } catch (error) {
       console.error(error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to load attendance.",
+      );
     } finally {
       setLoading(false);
     }
@@ -206,7 +210,7 @@ function Attendance() {
               </h2>
 
               <p className="mt-2 text-slate-400">
-                Add your first subject to get started.
+                Start tracking your attendance by adding your first subject.
               </p>
             </div>
           ) : (

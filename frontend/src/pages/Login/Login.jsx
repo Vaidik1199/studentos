@@ -31,25 +31,19 @@ function Login() {
 
       login(response.token);
 
+      localStorage.setItem("user", JSON.stringify(response.data));
+
       toast.success(response.message);
 
       navigate("/dashboard");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Something went wrong."
-      );
+      toast.error(error.response?.data?.message || "Something went wrong.");
     }
   };
 
   return (
-    <AuthLayout
-      title="Welcome Back"
-      subtitle="Login to continue your journey."
-    >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
+    <AuthLayout title="Welcome Back" subtitle="Login to continue your journey.">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Input
           label="Email"
           name="email"
@@ -77,10 +71,7 @@ function Login() {
           </button>
         </div>
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-        >
+        <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Logging in..." : "Login"}
         </Button>
 

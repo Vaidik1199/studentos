@@ -58,9 +58,8 @@ function Assignments() {
     } catch (error) {
       console.error(error);
       toast.error(
-  error.response?.data?.message ||
-    "Failed to create assignment."
-);
+        error.response?.data?.message || "Failed to create assignment.",
+      );
     }
   };
 
@@ -76,10 +75,13 @@ function Assignments() {
       await fetchAssignments();
     } catch (error) {
       console.error(error);
+
       toast.error(
-  error.response?.data?.message ||
-    "Failed to update assignment."
-);
+        error.response?.data?.message || "Failed to load assignments.",
+      );
+      toast.error(
+        error.response?.data?.message || "Failed to update assignment.",
+      );
     }
   };
 
@@ -87,22 +89,21 @@ function Assignments() {
     try {
       await updateAssignment(assignment._id, {
         ...assignment,
-        status:
-          assignment.status === "Pending"
-            ? "Completed"
-            : "Pending",
+        status: assignment.status === "Pending" ? "Completed" : "Pending",
       });
 
       toast.success(
         assignment.status === "Pending"
           ? "Assignment marked as completed."
-          : "Assignment marked as pending."
+          : "Assignment marked as pending.",
       );
 
       await fetchAssignments();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to update assignment.");
+      toast.error(
+        error.response?.data?.message || "Failed to update assignment.",
+      );
     }
   };
 
@@ -123,15 +124,11 @@ function Assignments() {
   };
 
   const filteredAssignments = assignments
-    .filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase())
-    )
+    .filter((item) => item.title.toLowerCase().includes(search.toLowerCase()))
     .filter((item) => {
-      if (filterBy === "pending")
-        return item.status === "Pending";
+      if (filterBy === "pending") return item.status === "Pending";
 
-      if (filterBy === "completed")
-        return item.status === "Completed";
+      if (filterBy === "completed") return item.status === "Completed";
 
       return true;
     })
@@ -158,20 +155,15 @@ function Assignments() {
     <DashboardLayout>
       <PageTransition>
         <div className="space-y-8">
-
           <div>
-            <h1 className="text-4xl font-bold text-white">
-              Assignments
-            </h1>
+            <h1 className="text-4xl font-bold text-white">Assignments</h1>
 
             <p className="mt-2 text-slate-400">
               Manage your assignments and deadlines.
             </p>
           </div>
 
-          <AssignmentSummary
-            assignments={filteredAssignments}
-          />
+          <AssignmentSummary assignments={filteredAssignments} />
 
           <div className="mb-6 flex flex-col gap-4 lg:flex-row">
             <input
@@ -236,7 +228,6 @@ function Assignments() {
               ))}
             </div>
           )}
-
         </div>
 
         <Modal

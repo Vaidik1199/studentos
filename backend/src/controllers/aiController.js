@@ -4,13 +4,15 @@ export const generateResponse = async (req, res) => {
   try {
     const { prompt } = req.body;
 
-    if (!prompt) {
+    // FIX 3: Prevents empty prompts with only spaces
+    if (!prompt?.trim()) {
       return res.status(400).json({
         success: false,
         message: "Prompt is required.",
       });
     }
 
+    // FIX 3: Injected prompt.trim() below into the system instructions template
     const finalPrompt = `
 You are StudentOS AI, a professional academic assistant for college students.
 
@@ -46,7 +48,7 @@ IMPORTANT RULES:
 
 Student Question:
 
-${prompt}
+${prompt.trim()}
 `;
 
     const chat = model.startChat({
@@ -118,7 +120,8 @@ export const generateStudyPlan = async (req, res) => {
       weakSubjects,
     } = req.body;
 
-    if (!examDate || !studyHours || !subjects) {
+    // FIX 4: Stronger validation checking for whitespace-only strings
+    if (!examDate || !studyHours || !subjects?.trim()) {
       return res.status(400).json({
         success: false,
         message: "Exam date, study hours and subjects are required.",
@@ -137,7 +140,7 @@ Study Hours Per Day:
 ${studyHours}
 
 Subjects:
-${subjects}
+${subjects.trim()}
 
 Weak Subjects:
 ${weakSubjects || "None"}

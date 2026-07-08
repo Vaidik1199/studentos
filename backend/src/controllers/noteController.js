@@ -6,7 +6,15 @@ import Note from "../models/Note.js";
 
 export const createNote = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const title = req.body.title.trim();
+    const content = req.body.content.trim();
+
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: "Title and content are required.",
+      });
+    }
 
     const note = await Note.create({
       user: req.user._id,
@@ -70,7 +78,7 @@ export const updateNote = async (req, res) => {
       req.body,
       {
         new: true,
-      }
+      },
     );
 
     if (!note) {
@@ -131,7 +139,7 @@ export const saveAINote = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    if (!content) {
+    if (!content?.trim()) {
       return res.status(400).json({
         success: false,
         message: "Content is required.",

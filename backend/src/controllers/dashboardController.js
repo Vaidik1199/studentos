@@ -13,44 +13,39 @@ export const getDashboardStats = async (req, res) => {
 
     const attendedClasses = attendance.reduce(
       (sum, item) => sum + item.attendedClasses,
-      0
+      0,
     );
 
     const totalClasses = attendance.reduce(
       (sum, item) => sum + item.totalClasses,
-      0
+      0,
     );
 
     const averageAttendance =
       totalClasses === 0
         ? 0
-        : Number(
-            (
-              (attendedClasses / totalClasses) *
-              100
-            ).toFixed(1)
-          );
+        : Number(((attendedClasses / totalClasses) * 100).toFixed(1));
 
     // Assignments
-    const pendingAssignments =
-      await Assignment.countDocuments({
-        user: req.user._id,
-        status: "Pending",
-      });
+    const pendingAssignments = await Assignment.countDocuments({
+      user: req.user._id,
+      status: "Pending",
+    });
 
-    const upcomingAssignments =
-      await Assignment.find({
-        user: req.user._id,
-        status: "Pending",
-      })
-        .sort({ dueDate: 1 })
-        .limit(5);
+    const upcomingAssignments = await Assignment.find({
+      user: req.user._id,
+      status: "Pending",
+    })
+      .select("title dueDate priority status")
+      .sort({ dueDate: 1 })
+      .limit(5);
 
     // Notes
     const recentNotes = await Note.find({
       user: req.user._id,
     })
-      .sort({ updatedAt: -1 })
+      .select("title updatedAt pinned")
+      .sort({ pinned: -1, updatedAt: -1 })
       .limit(5);
 
     return res.json({

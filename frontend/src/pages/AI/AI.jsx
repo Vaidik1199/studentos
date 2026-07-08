@@ -37,9 +37,9 @@ function AI() {
       customPrompt = null;
     }
 
-    const question = customPrompt ?? prompt;
+    const question = (customPrompt ?? prompt).trim();
 
-    if (!question.trim()) {
+    if (!question) {
       toast.error("Please enter a question.");
       return;
     }
@@ -158,7 +158,9 @@ function AI() {
         y += 10;
       });
 
-      pdf.save("StudentOS_AI_Chat.pdf");
+      pdf.save(
+        `StudentOS_AI_Chat_${new Date().toISOString().slice(0, 10)}.pdf`
+      );
 
       toast.success("PDF Exported Successfully!");
     } catch (error) {

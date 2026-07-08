@@ -8,14 +8,19 @@ export const createAssignment = async (req, res) => {
   try {
     const { title } = req.body;
 
+    if (new Date(req.body.dueDate) < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "Due date cannot be in the past.",
+      });
+    }
+
     const assignments = await Assignment.find({
       user: req.user._id,
     });
 
     const duplicate = assignments.find(
-      (item) =>
-        item.title.trim().toLowerCase() ===
-        title.trim().toLowerCase()
+      (item) => item.title.trim().toLowerCase() === title.trim().toLowerCase(),
     );
 
     if (duplicate) {
@@ -81,6 +86,13 @@ export const updateAssignment = async (req, res) => {
     const { id } = req.params;
     const { title } = req.body;
 
+    if (new Date(req.body.dueDate) < new Date()) {
+      return res.status(400).json({
+        success: false,
+        message: "Due date cannot be in the past.",
+      });
+    }
+
     const assignment = await Assignment.findOne({
       _id: id,
       user: req.user._id,
@@ -99,9 +111,7 @@ export const updateAssignment = async (req, res) => {
     });
 
     const duplicate = others.find(
-      (item) =>
-        item.title.trim().toLowerCase() ===
-        title.trim().toLowerCase()
+      (item) => item.title.trim().toLowerCase() === title.trim().toLowerCase(),
     );
 
     if (duplicate) {

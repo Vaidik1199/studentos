@@ -4,7 +4,8 @@ import generateToken from "../utils/generateToken.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { fullName, email, password } = req.body;
+    const { fullName, password } = req.body;
+    const email = req.body.email.trim().toLowerCase();
 
     // Check required fields
     if (!fullName || !email || !password) {
@@ -59,7 +60,8 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const password = req.body.password;
+    const email = req.body.email.trim().toLowerCase();
 
     // Check required fields
     if (!email || !password) {
@@ -80,10 +82,7 @@ export const loginUser = async (req, res) => {
     }
 
     // Compare password
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
@@ -92,18 +91,18 @@ export const loginUser = async (req, res) => {
       });
     }
 
-   const token = generateToken(user._id);
+    const token = generateToken(user._id);
 
-  return res.status(200).json({
-    success: true,
-    message: "Login successful.",
-    token,
-    data: {
-      id: user._id,
-      fullName: user.fullName,
-      email: user.email,
-    },
-  });
+    return res.status(200).json({
+      success: true,
+      message: "Login successful.",
+      token,
+      data: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.error(error);
 

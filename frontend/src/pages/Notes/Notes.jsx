@@ -40,6 +40,8 @@ function Notes() {
       setNotes(response.data);
     } catch (error) {
       console.error(error);
+
+      toast.error(error.response?.data?.message || "Failed to load notes.");
     } finally {
       setLoading(false);
     }
@@ -56,10 +58,7 @@ function Notes() {
       await fetchNotes();
     } catch (error) {
       console.error(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to create note."
-      );
+      toast.error(error.response?.data?.message || "Failed to create note.");
     }
   };
 
@@ -74,10 +73,7 @@ function Notes() {
       await fetchNotes();
     } catch (error) {
       console.error(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to update note."
-      );
+      toast.error(error.response?.data?.message || "Failed to update note.");
     }
   };
 
@@ -88,14 +84,12 @@ function Notes() {
         pinned: !note.pinned,
       });
 
-      toast.success(
-        note.pinned ? "Note unpinned." : "Note pinned."
-      );
+      toast.success(note.pinned ? "Note unpinned." : "Note pinned.");
 
       await fetchNotes();
     } catch (error) {
       console.error(error);
-      toast.error("Failed to update note.");
+      toast.error(error.response?.data?.message || "Failed to update note.");
     }
   };
 
@@ -116,9 +110,7 @@ function Notes() {
   };
 
   const filteredNotes = [...notes]
-    .filter((note) =>
-      note.title.toLowerCase().includes(search.toLowerCase())
-    )
+    .filter((note) => note.title.toLowerCase().includes(search.toLowerCase()))
     .sort((a, b) => {
       switch (sortBy) {
         case "oldest":
@@ -215,11 +207,7 @@ function Notes() {
           }}
         >
           <NoteForm
-            onSubmit={
-              editingNote
-                ? handleUpdateNote
-                : handleCreateNote
-            }
+            onSubmit={editingNote ? handleUpdateNote : handleCreateNote}
             editingNote={editingNote}
             cancelEdit={() => {
               setEditingNote(null);

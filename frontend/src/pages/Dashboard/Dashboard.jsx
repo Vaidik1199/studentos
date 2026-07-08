@@ -12,6 +12,10 @@ import UpcomingAssignments from "../../components/dashboard/UpcomingAssignments"
 
 import { getDashboardStats } from "../../services/dashboardService";
 
+import WeeklyGoals from "../../components/dashboard/WeeklyGoals";
+
+import TodaysFocus from "../../components/dashboard/TodaysFocus";
+
 import {
   PercentSquareIcon,
   BookOpen,
@@ -21,14 +25,14 @@ import {
 
 function Dashboard() {
   const [dashboard, setDashboard] = useState({
-  averageAttendance: 0,
-  totalSubjects: 0,
-  attendedClasses: 0,
-  pendingAssignments: 0,
-  recentNotes: [],
-  upcomingAssignments: [],
-  attendanceAlert: null,
-});
+    averageAttendance: 0,
+    totalSubjects: 0,
+    attendedClasses: 0,
+    pendingAssignments: 0,
+    recentNotes: [],
+    upcomingAssignments: [],
+    attendanceAlert: null,
+  });
 
   const [loading, setLoading] = useState(true);
 
@@ -51,11 +55,8 @@ function Dashboard() {
     <DashboardLayout>
       <PageTransition>
         <div className="space-y-8">
-
           <div>
-            <h1 className="text-4xl font-bold text-white">
-              Dashboard
-            </h1>
+            <h1 className="text-4xl font-bold text-white">Dashboard</h1>
 
             <p className="mt-2 text-slate-400">
               Here's your academic overview for today.
@@ -74,7 +75,6 @@ function Dashboard() {
               {/* Stats */}
 
               <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
                 <StatCard
                   title="Attendance"
                   value={`${dashboard.averageAttendance}%`}
@@ -106,34 +106,38 @@ function Dashboard() {
                   color="text-pink-400"
                   icon={<ClipboardList />}
                 />
-
               </div>
+
+              <TodaysFocus />
 
               {/* Attendance */}
 
-              <div className="grid gap-6 lg:grid-cols-2">
-
-                <AttendanceProgress
-                  percentage={dashboard.averageAttendance}
-                />
+              <div className="grid gap-6 xl:grid-cols-3">
+                <div className="xl:col-span-2">
+                  <AttendanceProgress
+                    percentage={dashboard.averageAttendance}
+                  />
+                </div>
 
                 <AttendanceAlert attendance={dashboard.attendance || []} />
-
               </div>
 
               {/* Notes & Assignments */}
 
               <div className="grid gap-6 lg:grid-cols-2">
-
                 <RecentNotes notes={dashboard.recentNotes || []} />
 
-                <UpcomingAssignments assignments={dashboard.upcomingAssignments || []} />
+                <UpcomingAssignments
+                  assignments={dashboard.upcomingAssignments || []}
+                />
 
               </div>
 
+              <div className="grid gap-6">
+  <WeeklyGoals />
+</div>
             </>
           )}
-
         </div>
       </PageTransition>
     </DashboardLayout>

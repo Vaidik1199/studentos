@@ -1,40 +1,103 @@
-import CalendarHeatmap from "react-calendar-heatmap";
-import "react-calendar-heatmap/dist/styles.css";
-import { subDays } from "date-fns";
+import { useEffect, useState } from "react";
+import { getNotes } from "../../services/noteService";
+import { getAssignments } from "../../services/assignmentService";
+import { getAttendance } from "../../services/attendanceService";
 
-const values = [
-  { date: "2026-06-07", count: 2 },
-  { date: "2026-06-08", count: 4 },
-  { date: "2026-06-09", count: 1 },
-  { date: "2026-06-10", count: 5 },
-  { date: "2026-06-11", count: 3 },
-  { date: "2026-06-12", count: 4 },
-  { date: "2026-06-13", count: 5 },
-];
+function StudyHeatMap() {
+  const [stats, setStats] = useState({
+    notes: 0,
+    assignments: 0,
+    attendance: 0,
+  });
 
-function StudyHeatmap() {
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const [notesRes, assignmentRes, attendanceRes] =
+        await Promise.all([
+          getNotes(),
+          getAssignments(),
+          getAttendance(),
+        ]);
+
+      const attendancePercentage =
+        attendanceRes.data.length === 0
+          ? 0
+          : (
+              attendanceRes.data.reduce(
+                (sum, item) =>
+                  sum +
+                  (item.totalClasses === 0
+                    ? 0
+                    : (item.attendedClasses /
+                        item.totalClasses) *
+                      100),
+                0
+              ) / attendanceRes.data.length
+            ).toFixed(1);
+
+      setStats({
+        notes: notesRes.data.length,
+        assignments: assignmentRes.data.length,
+        attendance: attendancePercentage,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const cards = [
+    {
+      title: "Notes",
+      value: stats.notes,
+      color: "from-indigo-500 to-violet-500",
+      icon: "📝",
+    },
+    {
+      title: "Assignments",
+      value: stats.assignments,
+      color: "from-emerald-500 to-green-500",
+      icon: "📚",
+    },
+    {
+      title: "Attendance",
+      value: `${stats.attendance}%`,
+      color: "from-orange-500 to-red-500",
+      icon: "🎯",
+    },
+  ];
+
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-      <h2 className="mb-6 text-xl font-semibold text-white">
-        Weekly Study Activity
+    <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-lg">
+      <h2 className="mb-6 text-xl font-bold text-white">
+        📊 Study Overview
       </h2>
 
-      <CalendarHeatmap
-        startDate={subDays(new Date(), 30)}
-        endDate={new Date()}
-        values={values}
-        classForValue={(value) => {
-          if (!value) return "color-empty";
+      <div className="grid gap-5 md:grid-cols-3">
+        {cards.map((card) => (
+          <div
+            key={card.title}
+            className={`rounded-2xl bg-gradient-to-r ${card.color} p-5`}
+          >
+            <div className="text-4xl">
+              {card.icon}
+            </div>
 
-          if (value.count >= 5) return "color-github-4";
-          if (value.count >= 4) return "color-github-3";
-          if (value.count >= 2) return "color-github-2";
+            <p className="mt-3 text-sm text-white/80">
+              {card.title}
+            </p>
 
-          return "color-github-1";
-        }}
-      />
+            <h2 className="mt-2 text-3xl font-bold text-white">
+              {card.value}
+            </h2>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-export default StudyHeatmap;
+export default StudyHeatMap;

@@ -6,6 +6,7 @@ import {
   NotebookPen,
   BarChart3,
   Bot,
+  BrainCircuit,
   LogOut,
   User,
   X,
@@ -45,15 +46,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 px-6 py-8">
-
           <div>
             <h1 className="text-3xl font-bold tracking-wide text-indigo-500">
               StudentOS
             </h1>
 
-            <p className="mt-2 text-sm text-slate-400">
-              Student Productivity
-            </p>
+            <p className="mt-2 text-sm text-slate-400">Student Productivity</p>
           </div>
 
           <button
@@ -62,12 +60,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           >
             <X size={22} />
           </button>
-
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 space-y-2 px-4 py-6">
-
           <NavLink
             to="/dashboard"
             onClick={closeSidebar}
@@ -158,27 +154,49 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             AI Assistant
           </NavLink>
 
+          <NavLink
+            to="/study-planner"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <BrainCircuit size={20} />
+            Study Planner
+          </NavLink>
+
+          <NavLink
+            to="/study-plans"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `${navItem} ${
+                isActive
+                  ? "bg-indigo-600 text-white shadow-lg"
+                  : "text-slate-300 hover:bg-slate-800"
+              }`
+            }
+          >
+            <ClipboardList size={20} />
+            My Study Plans
+          </NavLink>
         </nav>
 
         {/* User */}
         <div className="border-t border-slate-800 p-4">
-
           <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-800 p-3">
-
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600">
               <User size={20} />
             </div>
 
             <div>
-              <p className="font-semibold text-white">
-                Student
-              </p>
+              <p className="font-semibold text-white">Student</p>
 
-              <p className="text-xs text-slate-400">
-                Logged In
-              </p>
+              <p className="text-xs text-slate-400">Logged In</p>
             </div>
-
           </div>
 
           <button
@@ -188,9 +206,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             <LogOut size={18} />
             Logout
           </button>
-
         </div>
-
       </aside>
     </>
   );

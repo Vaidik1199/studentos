@@ -108,3 +108,90 @@ ${prompt}
     });
   }
 };
+
+export const generateStudyPlan = async (req, res) => {
+  try {
+    const {
+      examDate,
+      studyHours,
+      subjects,
+      weakSubjects,
+    } = req.body;
+
+    if (!examDate || !studyHours || !subjects) {
+      return res.status(400).json({
+        success: false,
+        message: "Exam date, study hours and subjects are required.",
+      });
+    }
+
+    const prompt = `
+You are StudentOS AI, an expert academic mentor.
+
+Create a personalized study plan.
+
+Exam Date:
+${examDate}
+
+Study Hours Per Day:
+${studyHours}
+
+Subjects:
+${subjects}
+
+Weak Subjects:
+${weakSubjects || "None"}
+
+Instructions:
+
+- Divide the plan day-by-day.
+- Allocate extra time for weak subjects.
+- Include revision sessions.
+- Keep one full revision day before the exam.
+- Add one mock test before the exam.
+- Keep each day's workload realistic.
+- Return the answer in clean Markdown.
+
+Example:
+
+## Day 1
+- DBMS Unit 1
+- CN Unit 1
+- 30 min Revision
+
+## Day 2
+- AI Unit 1
+- WT Unit 1
+- Practice Questions
+
+Continue until the exam date.
+`;
+
+    const result = await model.generateContent(prompt);
+
+    const response = result.response.text();
+
+    return res.status(200).json({
+      success: true,
+      data: response,
+    });
+  } catch (error) {
+    console.error(error);
+
+    if (
+      error.status === 429 ||
+      error.message?.includes("429") ||
+      error.message?.includes("quota")
+    ) {
+      return res.status(429).json({
+        success: false,
+        message: "Daily AI limit reached.",
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to generate study plan.",
+    });
+  }
+};

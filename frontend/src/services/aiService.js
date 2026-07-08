@@ -9,10 +9,20 @@ const getAuthConfig = () => ({
 export const askAI = async (prompt, history) => {
   const response = await api.post(
     "/ai",
-    { 
+    {
       prompt,
-    history
+      history,
     },
+    getAuthConfig()
+  );
+
+  return response.data;
+};
+
+export const generateStudyPlan = async (data) => {
+  const response = await api.post(
+    "/ai/study-plan",
+    data,
     getAuthConfig()
   );
 

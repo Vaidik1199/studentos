@@ -5,6 +5,9 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import AnalyticsCard from "../../components/analytics/AnalyticsCard";
 import AttendanceChart from "../../components/analytics/AttendanceChart";
 import AssignmentChart from "../../components/analytics/AssignmentChart";
+import SubjectAttendance from "../../components/analytics/SubjectAttendance";
+import AssignmentInsights from "../../components/analytics/AssignmentInsights";
+import PerformanceSummary from "../../components/analytics/PerformanceSummary";
 
 import { getAnalytics } from "../../services/analyticsService";
 
@@ -36,12 +39,12 @@ function Analytics() {
     return (
       <DashboardLayout>
         <PageTransition>
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </div>
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
         </PageTransition>
       </DashboardLayout>
     );
@@ -50,57 +53,75 @@ function Analytics() {
   return (
     <DashboardLayout>
       <PageTransition>
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-bold text-white">
-            Analytics
-          </h1>
+        <div className="space-y-8">
+          {/* Heading */}
 
-          <p className="mt-2 text-slate-400">
-            Track your academic performance.
-          </p>
+          <div>
+            <h1 className="text-4xl font-bold text-white">
+              Analytics
+            </h1>
+
+            <p className="mt-2 text-slate-400">
+              Track your academic performance.
+            </p>
+          </div>
+
+          {/* KPI Cards */}
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            <AnalyticsCard
+              title="Attendance"
+              value={`${analytics.attendance.averageAttendance}%`}
+              subtitle="Average Attendance"
+              color="text-emerald-400"
+            />
+
+            <AnalyticsCard
+              title="Subjects"
+              value={analytics.attendance.subjects}
+              subtitle="Tracked Subjects"
+              color="text-indigo-400"
+            />
+
+            <AnalyticsCard
+              title="Assignments"
+              value={analytics.assignments.total}
+              subtitle="Total Assignments"
+              color="text-yellow-400"
+            />
+
+            <AnalyticsCard
+              title="Notes"
+              value={analytics.notes.total}
+              subtitle="Saved Notes"
+              color="text-pink-400"
+            />
+          </div>
+
+          {/* Charts */}
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <AttendanceChart
+              attendance={analytics.attendance}
+            />
+
+            <AssignmentChart
+              assignments={analytics.assignments}
+            />
+          </div>
+
+          {/* Insights */}
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            <SubjectAttendance />
+
+            <AssignmentInsights />
+          </div>
+
+          {/* Performance Summary */}
+
+          <PerformanceSummary />
         </div>
-
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          <AnalyticsCard
-            title="Attendance"
-            value={`${analytics.attendance.averageAttendance}%`}
-            subtitle="Average Attendance"
-            color="text-emerald-400"
-          />
-
-          <AnalyticsCard
-            title="Subjects"
-            value={analytics.attendance.subjects}
-            subtitle="Tracked Subjects"
-            color="text-indigo-400"
-          />
-
-          <AnalyticsCard
-            title="Assignments"
-            value={analytics.assignments.total}
-            subtitle="Total Assignments"
-            color="text-yellow-400"
-          />
-
-          <AnalyticsCard
-            title="Notes"
-            value={analytics.notes.total}
-            subtitle="Saved Notes"
-            color="text-pink-400"
-          />
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <AttendanceChart
-            attendance={analytics.attendance}
-          />
-
-          <AssignmentChart
-            assignments={analytics.assignments}
-          />
-        </div>
-      </div>
       </PageTransition>
     </DashboardLayout>
   );

@@ -11,26 +11,18 @@ import Analytics from "../pages/Analytics/Analytics";
 import AI from "../pages/AI/AI";
 import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
+import StudyPlanner from "../pages/StudyPlanner/StudyPlanner";
+import StudyPlans from "../pages/StudyPlans/StudyPlans";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/dashboard"
@@ -88,6 +80,9 @@ function AppRoutes() {
 
         <Route path="*" element={<NotFound />} />
 
+        <Route path="/study-planner" element={<StudyPlanner />} />
+
+        <Route path="/study-plans" element={<StudyPlans />} />
       </Routes>
     </BrowserRouter>
   );

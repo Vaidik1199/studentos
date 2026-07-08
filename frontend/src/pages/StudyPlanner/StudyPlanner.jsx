@@ -77,109 +77,203 @@ function StudyPlanner() {
   return (
     <DashboardLayout>
       <PageTransition>
-        <div className="mx-auto max-w-6xl space-y-8">
-          <div>
-            <h1 className="text-4xl font-bold text-white">AI Study Planner</h1>
+        <div className="mx-auto max-w-7xl space-y-6 px-4 sm:space-y-8 sm:px-0">
+          {/* Header */}
 
-            <p className="mt-2 text-slate-400">
-              Generate a personalized study schedule using AI.
+          <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 p-6 shadow-xl sm:rounded-3xl sm:p-8">
+            <div className="inline-flex items-center rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300">
+              🤖 AI Powered Study Planner
+            </div>
+
+            <h1 className="mt-5 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl">
+              Create Your Perfect
+              <span className="text-indigo-400"> Study Plan</span>
+            </h1>
+
+            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-400 sm:text-lg">
+              Let StudentOS AI build a personalized timetable based on your exam
+              date, available study hours and subjects.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-            <div className="grid gap-6 md:grid-cols-2">
-              <div>
-                <label className="mb-2 block text-slate-300">Exam Date</label>
+          {/* Planner Form */}
 
-                <input
-                  type="date"
-                  value={examDate}
-                  onChange={(e) => setExamDate(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 p-4 text-white [color-scheme:dark]"
-                />
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 shadow-xl sm:rounded-3xl">
+            <div className="border-b border-slate-800 px-8 py-6">
+              <h2 className="text-2xl font-bold text-white">Study Details</h2>
+
+              <p className="mt-2 text-slate-400">
+                Fill in the information below to generate your personalized
+                study schedule.
+              </p>
+            </div>
+
+            <div className="space-y-6 p-5 sm:space-y-8 sm:p-8">
+              {/* Date + Hours */}
+
+              <div className="grid gap-6 lg:grid-cols-2">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
+                  <label className="mb-3 block text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    📅 Exam Date
+                  </label>
+
+                  <input
+                    type="date"
+                    value={examDate}
+                    onChange={(e) => setExamDate(e.target.value)}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-900 p-3 text-base sm:p-4 sm:text-lg  text-lg text-white outline-none transition focus:border-indigo-500 [color-scheme:dark]"
+                  />
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
+                  <label className="mb-3 block text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    ⏰ Study Hours / Day
+                  </label>
+
+                  <input
+                    type="number"
+                    placeholder="Example : 4"
+                    value={studyHours}
+                    onChange={(e) => setStudyHours(e.target.value)}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-900 p-3 text-base sm:p-4 sm:text-lg text-lg text-white outline-none transition focus:border-indigo-500"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="mb-2 block text-slate-300">
-                  Study Hours / Day
-                </label>
+              {/* Subjects */}
 
-                <input
-                  type="number"
-                  placeholder="3"
-                  value={studyHours}
-                  onChange={(e) => setStudyHours(e.target.value)}
-                  className="w-full rounded-xl border border-slate-700 bg-slate-950 p-4 text-white"
-                />
+              <div className="grid gap-6 lg:grid-cols-2">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
+                  <label className="mb-3 block text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    📚 Subjects
+                  </label>
+
+                  <textarea
+                    rows={7}
+                    value={subjects}
+                    onChange={(e) => setSubjects(e.target.value)}
+                    placeholder={`DBMS
+                      Computer Networks
+                      Artificial Intelligence
+                      Web Technology`
+                    }
+                    className="w-full resize-none rounded-xl border border-slate-700 bg-slate-900  p-3 text-base sm:p-4 sm:text-lg  text-white outline-none transition focus:border-indigo-500"
+                  />
+
+                  <p className="mt-3 text-sm text-slate-500">
+                    Enter one subject per line.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6">
+                  <label className="mb-3 block text-sm font-semibold uppercase tracking-wide text-slate-400">
+                    🎯 Weak Subjects
+                  </label>
+
+                  <textarea
+                    rows={7}
+                    value={weakSubjects}
+                    onChange={(e) => setWeakSubjects(e.target.value)}
+                    placeholder={`DBMS
+                      Computer Networks`
+                    }
+                    className="w-full resize-none rounded-xl border border-slate-700 bg-slate-900  p-3 text-base sm:p-4 sm:text-lg text-white outline-none transition focus:border-indigo-500"
+                  />
+
+                  <p className="mt-3 text-sm text-slate-500">
+                    StudentOS AI will allocate extra study time for these
+                    subjects.
+                  </p>
+                </div>
               </div>
+
+              {/* Generate Button */}
+
+              <button
+                onClick={handleGenerate}
+                disabled={loading}
+                className="group w-full rounded-xl py-4 text-base font-semibold sm:rounded-2xl sm:py-5 sm:text-lg bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-600/40 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading
+                  ? "🤖 Generating Your Study Plan..."
+                  : "✨ Generate AI Study Plan"}
+              </button>
             </div>
-
-            <div className="mt-6">
-              <label className="mb-2 block text-slate-300">Subjects</label>
-
-              <textarea
-                rows={5}
-                value={subjects}
-                onChange={(e) => setSubjects(e.target.value)}
-                placeholder={`DBMS
-CN
-AI
-WT`}
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 p-4 text-white"
-              />
-            </div>
-
-            <div className="mt-6">
-              <label className="mb-2 block text-slate-300">Weak Subjects</label>
-
-              <input
-                value={weakSubjects}
-                onChange={(e) => setWeakSubjects(e.target.value)}
-                placeholder="DBMS, CN"
-                className="w-full rounded-xl border border-slate-700 bg-slate-950 p-4 text-white"
-              />
-            </div>
-
-            <button
-              onClick={handleGenerate}
-              disabled={loading}
-              className="mt-8 w-full rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 py-4 text-lg font-semibold text-white transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? "Generating Study Plan..." : "Generate AI Study Plan"}
-            </button>
           </div>
 
           {plan && (
-            <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-              <h2 className="mb-6 text-2xl font-bold text-white">
-                📚 Your AI Study Plan
-              </h2>
+            <div className="rounded-3xl border border-slate-800 bg-slate-900 shadow-xl">
+              {/* Header */}
 
-              <div className="prose prose-invert max-w-none prose-headings:text-white prose-p:text-slate-300 prose-li:text-slate-300 prose-strong:text-indigo-300">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeHighlight]}
-                >
-                  {plan}
-                </ReactMarkdown>
+              <div className="flex flex-col gap-5 border-b border-slate-800 p-5 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <div className="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-300">
+                    ✅ AI Generated Successfully
+                  </div>
+
+                  <h2 className="mt-4 text-3xl font-bold text-white">
+                    Your Personalized Study Plan
+                  </h2>
+
+                  <p className="mt-2 text-slate-400">
+                    Review the schedule below and save it for future access.
+                  </p>
+                </div>
+
+                <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+                  <button
+                    onClick={handleSave}
+                    disabled={loading}
+                    className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+                  >
+                    💾 Save Plan
+                  </button>
+
+                  <button
+                    onClick={handleGenerate}
+                    disabled={loading}
+                    className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60"
+                  >
+                    🔄 Regenerate
+                  </button>
+                </div>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <button
-                  onClick={handleSave}
-                  disabled={loading}
-                  className="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  💾 Save Plan
-                </button>
+              {/* Markdown */}
 
-                <button
-                  onClick={handleGenerate}
-                  disabled={loading}
-                  className="rounded-xl bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  🔄 Regenerate
-                </button>
+              <div className="p-8">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5 sm:p-8 overflow-x-auto">
+                  <div
+                    className="
+                    prose-sm
+                    sm:prose
+                    lg:prose-lg
+                    prose-invert
+                    max-w-none
+                    
+                    prose-headings:text-white
+                    prose-headings:font-bold
+                    
+                    prose-p:text-slate-300
+                    prose-p:leading-8
+                    
+                    prose-li:text-slate-300
+                    prose-li:leading-8
+                    
+                    prose-strong:text-indigo-300
+                    prose-code:text-emerald-300
+                    prose-pre:bg-slate-900
+                    prose-blockquote:border-indigo-500
+                    "
+                  >
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeHighlight]}
+                    >
+                      {plan}
+                    </ReactMarkdown>
+                  </div>
+                </div>
               </div>
             </div>
           )}

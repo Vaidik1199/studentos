@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import jsPDF from "jspdf";
 import SuggestedQuestions from "../../components/ai/SuggestedQuestions";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import ChatMessage from "../../components/ai/ChatMessage";
@@ -7,13 +8,7 @@ import { askAI } from "../../services/aiService";
 import QuickPrompts from "../../components/ai/QuickPrompts";
 import TypingIndicator from "../../components/ai/TypingIndicator";
 import PageTransition from "../../components/common/PageTransition";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import PromptTemplates from "../../components/ai/PromptTemplates";
-
-<PromptTemplates
-  onSelect={(text) => setPrompt(text)}
-/>
 
 function AI() {
   const [messages, setMessages] = useState(() => {
@@ -26,7 +21,6 @@ function AI() {
   const [lastPrompt, setLastPrompt] = useState("");
 
   const messagesEndRef = useRef(null);
-  const chatRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -35,17 +29,11 @@ function AI() {
   }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem(
-      "studentos-ai-chat",
-      JSON.stringify(messages)
-    );
+    localStorage.setItem("studentos-ai-chat", JSON.stringify(messages));
   }, [messages]);
 
   const handleAskAI = async (customPrompt = null) => {
-    if (
-      customPrompt &&
-      typeof customPrompt !== "string"
-    ) {
+    if (customPrompt && typeof customPrompt !== "string") {
       customPrompt = null;
     }
 
@@ -89,75 +77,100 @@ function AI() {
     } catch (error) {
       console.error(error);
       toast.error(
-      error.response?.data?.message ||
-      "Failed to generate AI response."
-    );
+        error.response?.data?.message || "Failed to generate AI response.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const exportChat = async () => {
-    if (!chatRef.current) return;
+  const exportChat = () => {
+    try {
+      if (messages.length === 0) {
+        toast.error("No chat to export.");
+        return;
+      }
 
-    const canvas = await html2canvas(chatRef.current, {
-      scale: 2,
-      backgroundColor: "#020617",
-      useCORS: true,
-      scrollY: -window.scrollY,
-    });
+      const pdf = new jsPDF();
 
-    const imgData = canvas.toDataURL("image/png");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-    const pdf = new jsPDF("p", "mm", "a4");
+      const margin = 15;
+      const maxWidth = pageWidth - margin * 2;
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+      let y = 20;
 
-    const imgWidth = pdfWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(18);
+      pdf.text("StudentOS AI Chat", margin, y);
 
-    let heightLeft = imgHeight;
-    let position = 0;
+      y += 12;
 
-    pdf.addImage(
-      imgData,
-      "PNG",
-      0,
-      position,
-      imgWidth,
-      imgHeight
-    );
+      pdf.setDrawColor(180);
+      pdf.line(margin, y, pageWidth - margin, y);
 
-    heightLeft -= pdfHeight;
+      y += 10;
 
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
+      messages.forEach((message) => {
+        if (y > pageHeight - 25) {
+          pdf.addPage();
+          y = 20;
+        }
 
-      pdf.addPage();
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(13);
 
-      pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        position,
-        imgWidth,
-        imgHeight
-      );
+        pdf.text(
+          message.role === "user"
+            ? "👤 You"
+            : "🤖 StudentOS AI",
+          margin,
+          y
+        );
 
-      heightLeft -= pdfHeight;
+        y += 8;
+
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(11);
+
+        const lines = pdf.splitTextToSize(
+          message.content,
+          maxWidth
+        );
+
+        lines.forEach((line) => {
+          if (y > pageHeight - 15) {
+            pdf.addPage();
+            y = 20;
+          }
+
+          pdf.text(line, margin, y);
+
+          y += 6;
+        });
+
+        y += 8;
+
+        pdf.setDrawColor(220);
+        pdf.line(margin, y, pageWidth - margin, y);
+
+        y += 10;
+      });
+
+      pdf.save("StudentOS_AI_Chat.pdf");
+
+      toast.success("PDF Exported Successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to export PDF.");
     }
-
-    pdf.save("StudentOS_AI_Chat.pdf");
   };
 
   return (
     <DashboardLayout>
       <PageTransition>
-        <div
-          ref={chatRef}
-          className="mx-auto flex min-h-[calc(100vh-140px)] max-w-5xl flex-col"
-        >
+        <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-5xl flex-col">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-4xl font-bold text-white">
@@ -191,18 +204,18 @@ function AI() {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-6">
+          <div
+            className="flex-1 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-6"
+          >
             {messages.length === 0 && (
               <>
-                <QuickPrompts
-                  onSelect={(text) => setPrompt(text)}
-                />
+                <QuickPrompts onSelect={(text) => setPrompt(text)} />
 
-                <SuggestedQuestions
-                  onSelect={(text) => setPrompt(text)}
-                />
+                <SuggestedQuestions onSelect={(text) => setPrompt(text)} />
               </>
             )}
+
+            <PromptTemplates onSelect={(text) => setPrompt(text)} />
 
             <div className="space-y-5">
               {messages.map((message, index) => (

@@ -4,9 +4,26 @@ export const createAttendance = async (req, res) => {
   try {
     const { subject, attendedClasses, totalClasses } = req.body;
 
+    const subjects = await Attendance.find({
+      user: req.user._id,
+    });
+
+    const duplicate = subjects.find(
+      (item) =>
+        item.subject.trim().toLowerCase() ===
+        subject.trim().toLowerCase()
+    );
+
+    if (duplicate) {
+      return res.status(400).json({
+        success: false,
+        message: "Subject already exists.",
+      });
+    }
+
     const attendance = await Attendance.create({
       user: req.user._id,
-      subject,
+      subject: subject.trim(),
       attendedClasses,
       totalClasses,
     });
@@ -28,16 +45,9 @@ export const createAttendance = async (req, res) => {
 
 export const getAttendance = async (req, res) => {
   try {
-    console.log("========== GET ATTENDANCE ==========");
-    console.log("Authenticated User ID:", req.user._id);
-    console.log("Authenticated Email:", req.user.email);
-
     const attendance = await Attendance.find({
       user: req.user._id,
     });
-
-    console.log("Attendance Found:", attendance);
-    console.log("===================================");
 
     return res.status(200).json({
       success: true,
@@ -69,16 +79,27 @@ export const updateAttendance = async (req, res) => {
       });
     }
 
-    attendance.subject =
-      req.body.subject ?? attendance.subject;
+    const subjects = await Attendance.find({
+      user: req.user._id,
+      _id: { $ne: id },
+    });
 
-    attendance.attendedClasses =
-      req.body.attendedClasses ??
-      attendance.attendedClasses;
+    const duplicate = subjects.find(
+      (item) =>
+        item.subject.trim().toLowerCase() ===
+        req.body.subject.trim().toLowerCase()
+    );
 
-    attendance.totalClasses =
-      req.body.totalClasses ??
-      attendance.totalClasses;
+    if (duplicate) {
+      return res.status(400).json({
+        success: false,
+        message: "Subject already exists.",
+      });
+    }
+
+    attendance.subject = req.body.subject.trim();
+    attendance.attendedClasses = req.body.attendedClasses;
+    attendance.totalClasses = req.body.totalClasses;
 
     await attendance.save();
 

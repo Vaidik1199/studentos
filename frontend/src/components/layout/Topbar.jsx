@@ -12,15 +12,15 @@ function Topbar({ setSidebarOpen }) {
   // ✅ Added user data helper variables from localStorage
   const { user, logout } = useAuth();
 
-const fullName = user?.fullName || "Student";
+  const fullName = user?.fullName || "Student";
 
-const firstName = fullName.split(" ")[0];
+  const firstName = fullName.split(" ")[0];
 
-const initials = fullName
-  .split(" ")
-  .map((word) => word[0])
-  .join("")
-  .toUpperCase();
+  const initials = fullName
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 
   const handleLogout = () => {
     logout();
@@ -29,18 +29,14 @@ const initials = fullName
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(event.target)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
         setShowProfile(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
 
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const hours = new Date().getHours();
@@ -53,10 +49,8 @@ const initials = fullName
   return (
     <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
       <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-
         {/* Left */}
         <div className="flex items-center gap-4">
-
           <button
             onClick={() => setSidebarOpen(true)}
             className="rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800 lg:hidden"
@@ -73,32 +67,32 @@ const initials = fullName
               Ready to study today?
             </p>
           </div>
-
         </div>
 
         {/* Right */}
-        <div
-          ref={profileRef}
-          className="relative"
-        >
+        <div ref={profileRef} className="relative">
           <button
             onClick={() => setShowProfile(!showProfile)}
             className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 transition hover:bg-slate-800"
           >
             {/* ✅ Replaced "V" with initials */}
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
-              {initials}
+            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-indigo-600 font-semibold text-white">
+              {user?.profilePicture?.url ? (
+                <img
+                  src={user.profilePicture.url}
+                  alt={fullName}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                initials
+              )}
             </div>
 
             {/* ✅ Replaced static text with firstName and welcome message */}
             <div className="hidden text-left lg:block">
-              <p className="font-semibold text-white">
-                {firstName}
-              </p>
+              <p className="font-semibold text-white">{firstName}</p>
 
-              <p className="text-xs text-slate-400">
-                Welcome Back
-              </p>
+              <p className="text-xs text-slate-400">Welcome Back</p>
             </div>
 
             <ChevronDown
@@ -111,26 +105,27 @@ const initials = fullName
 
           {showProfile && (
             <div className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
-
               <div className="border-b border-slate-800 p-5">
                 <div className="flex items-center gap-3">
-
                   {/* ✅ Replaced static "V" inside dropdown with initials */}
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
-                    {initials}
+                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-indigo-600 font-semibold text-white">
+                    {user?.profilePicture?.url ? (
+                      <img
+                        src={user.profilePicture.url}
+                        alt={fullName}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      initials
+                    )}
                   </div>
 
                   {/* ✅ Replaced static dropdown text with fullName and email */}
                   <div>
-                    <p className="font-semibold text-white">
-                      {fullName}
-                    </p>
+                    <p className="font-semibold text-white">{fullName}</p>
 
-                    <p className="text-sm text-slate-400">
-                      {user?.email}
-                    </p>
+                    <p className="text-sm text-slate-400">{user?.email}</p>
                   </div>
-
                 </div>
               </div>
 
@@ -141,11 +136,9 @@ const initials = fullName
                 <LogOut size={18} />
                 Logout
               </button>
-
             </div>
           )}
         </div>
-
       </div>
     </header>
   );

@@ -104,6 +104,7 @@ export const loginUser = async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
+        profilePicture: user.profilePicture,
       },
     });
   } catch (error) {
@@ -309,6 +310,7 @@ export const getCurrentUser = async (req, res) => {
         fullName: user.fullName,
         email: user.email,
         createdAt: user.createdAt,
+        profilePicture: user.profilePicture,
       },
     });
   } catch (error) {
@@ -345,10 +347,7 @@ export const changePassword = async (req, res) => {
 
     const user = await User.findById(req.user._id);
 
-    const isMatch = await bcrypt.compare(
-      currentPassword,
-      user.password
-    );
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -357,10 +356,7 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcrypt.hash(
-      newPassword,
-      10
-    );
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = hashedPassword;
 
@@ -370,7 +366,6 @@ export const changePassword = async (req, res) => {
       success: true,
       message: "Password changed successfully.",
     });
-
   } catch (error) {
     console.error(error);
 

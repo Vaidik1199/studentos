@@ -211,8 +211,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               }`
             }
           >
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white">
-              {initials}
+            <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white">
+              {user?.profilePicture?.url ? (
+                <img
+                  src={user.profilePicture.url}
+                  alt={fullName}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                initials
+              )}
             </div>
 
             <div className="min-w-0">

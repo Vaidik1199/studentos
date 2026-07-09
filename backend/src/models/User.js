@@ -23,9 +23,16 @@ const userSchema = new mongoose.Schema(
     },
 
     profilePicture: {
-      type: String,
-      default: "",
-    },
+  url: {
+    type: String,
+    default: "",
+  },
+
+  publicId: {
+    type: String,
+    default: "",
+  },
+},
 
     // Forgot Password OTP
 

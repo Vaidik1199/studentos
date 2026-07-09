@@ -3,26 +3,51 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/Auth/ForgotPassword";
+import VerifyOtp from "../pages/Auth/VerifyOtp";
+import ResetPassword from "../pages/Auth/ResetPassword";
+
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Attendance from "../pages/Attendance/Attendance";
 import Notes from "../pages/Notes/Notes";
 import Assignments from "../pages/Assignments/Assignments";
 import Analytics from "../pages/Analytics/Analytics";
 import AI from "../pages/AI/AI";
-import NotFound from "../pages/NotFound/NotFound";
-import ProtectedRoute from "./ProtectedRoute";
 import StudyPlanner from "../pages/StudyPlanner/StudyPlanner";
 import StudyPlans from "../pages/StudyPlans/StudyPlans";
+
+import NotFound from "../pages/NotFound/NotFound";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* Public Routes */}
+
         <Route path="/" element={<Home />} />
 
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/verify-otp"
+          element={<VerifyOtp />}
+        />
+
+        <Route
+          path="/reset-password"
+          element={<ResetPassword />}
+        />
+
+        {/* Protected Routes */}
 
         <Route
           path="/dashboard"
@@ -78,11 +103,28 @@ function AppRoutes() {
           }
         />
 
+        <Route
+          path="/study-planner"
+          element={
+            <ProtectedRoute>
+              <StudyPlanner />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/study-plans"
+          element={
+            <ProtectedRoute>
+              <StudyPlans />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* 404 */}
+
         <Route path="*" element={<NotFound />} />
 
-        <Route path="/study-planner" element={<StudyPlanner />} />
-
-        <Route path="/study-plans" element={<StudyPlans />} />
       </Routes>
     </BrowserRouter>
   );

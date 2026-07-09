@@ -21,6 +21,17 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+
+    // Forgot Password OTP
+    resetPasswordOtp: {
+      type: String,
+      default: null,
+    },
+
+    resetPasswordOtpExpiry: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,

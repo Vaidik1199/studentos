@@ -14,6 +14,8 @@ import assignmentRoutes from "./routes/assignmentRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import studyPlanRoutes from "./routes/studyPlanRoutes.js";
+import "./config/mail.js";
+import emailRoutes from "./routes/emailRoutes.js";
 
 const app = express();
 
@@ -31,6 +33,7 @@ app.use("/api/assignments", assignmentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/study-plans", studyPlanRoutes);
+app.use("/api/email", emailRoutes);
 
 app.get("/", (_, res) => {
   res.json({

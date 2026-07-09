@@ -1,11 +1,46 @@
 import api from "../api/axios";
 
+// =========================
+// Register
+// =========================
+
 export const registerUser = async (userData) => {
   const response = await api.post("/auth/register", userData);
   return response.data;
 };
 
+// =========================
+// Login
+// =========================
+
 export const loginUser = async (userData) => {
   const response = await api.post("/auth/login", userData);
+  return response.data;
+};
+
+// =========================
+// Forgot Password
+// =========================
+
+export const forgotPassword = async (data) => {
+  const response = await api.post("/auth/forgot-password", data);
+  return response.data;
+};
+
+// =========================
+// Verify OTP
+// =========================
+
+export const verifyOtp = async (data) => {
+  const response = await api.post("/auth/verify-otp", data);
+  return response.data;
+};
+
+// =========================
+// Reset Password
+// =========================
+
+export const resetPassword = async (data) => {
+  const response = await api.post("/auth/reset-password", data);
   return response.data;
 };

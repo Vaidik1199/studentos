@@ -1,4 +1,4 @@
-import { Menu, User, LogOut, ChevronDown } from "lucide-react";
+import { Menu, User, LogOut, ChevronDown, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
@@ -48,7 +48,7 @@ function Topbar({ setSidebarOpen }) {
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Left */}
         <div className="flex items-center gap-4">
           <button
@@ -104,10 +104,15 @@ function Topbar({ setSidebarOpen }) {
           </button>
 
           {showProfile && (
-            <div className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
-              <div className="border-b border-slate-800 p-5">
+            <div className="absolute right-0 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
+              <button
+                onClick={() => {
+                  navigate("/profile");
+                  setShowProfile(false);
+                }}
+                className="w-full border-b border-slate-800 p-5 text-left transition hover:bg-slate-800"
+              >
                 <div className="flex items-center gap-3">
-                  {/* ✅ Replaced static "V" inside dropdown with initials */}
                   <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-indigo-600 font-semibold text-white">
                     {user?.profilePicture?.url ? (
                       <img
@@ -120,22 +125,51 @@ function Topbar({ setSidebarOpen }) {
                     )}
                   </div>
 
-                  {/* ✅ Replaced static dropdown text with fullName and email */}
-                  <div>
-                    <p className="font-semibold text-white">{fullName}</p>
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-white">
+                      {fullName}
+                    </p>
 
-                    <p className="text-sm text-slate-400">{user?.email}</p>
+                    <p className="truncate text-sm text-slate-400">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
-              </div>
-
-              <button
-                onClick={handleLogout}
-                className="flex w-full items-center gap-3 px-5 py-4 text-left text-red-400 transition hover:bg-red-500/10"
-              >
-                <LogOut size={18} />
-                Logout
               </button>
+
+              <div className="py-2">
+                <button
+                  onClick={() => {
+                    navigate("/profile");
+                    setShowProfile(false);
+                  }}
+                  className="flex w-full items-center gap-3 px-5 py-3 text-left font-medium text-slate-300 transition-all duration-200 hover:bg-slate-800 hover:text-white"
+                >
+                  <User size={18} />
+                  My Profile
+                </button>
+
+                <button
+                  onClick={() => {
+                    navigate("/settings");
+                    setShowProfile(false);
+                  }}
+                  className="flex w-full items-center gap-3 px-5 py-3 text-left text-slate-300 transition hover:bg-slate-800"
+                >
+                  <Settings size={18} />
+                  Settings
+                </button>
+
+                <div className="my-2 border-t border-slate-800" />
+
+                <button
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 px-5 py-3 text-left text-red-400 transition hover:bg-red-500/10"
+                >
+                  <LogOut size={18} />
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>

@@ -51,7 +51,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-hidden border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-hidden border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

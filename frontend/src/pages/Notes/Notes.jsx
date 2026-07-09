@@ -132,7 +132,7 @@ function Notes() {
       <PageTransition>
         <div className="space-y-8">
           <div>
-            <h1 className="text-4xl font-bold text-white">Notes</h1>
+            <h1 className="text-3xl font-bold text-white sm:text-4xl">Notes</h1>
 
             <p className="mt-2 text-slate-400">
               Organize your study notes in one place.
@@ -141,7 +141,7 @@ function Notes() {
 
           <NoteSummary notes={filteredNotes} />
 
-          <div className="mb-6 flex flex-col gap-4 lg:flex-row">
+          <div className="mt-8 mb-8 flex flex-col gap-4 md:flex-row">
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -152,7 +152,7 @@ function Notes() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="rounded-xl border border-slate-700 bg-slate-900 px-4 text-white"
+              className="rounded-xl border border-slate-700 bg-slate-900 px-4 py-4 text-white"
             >
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
@@ -168,13 +168,15 @@ function Notes() {
               <SkeletonCard />
             </div>
           ) : filteredNotes.length === 0 ? (
-            <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center">
-              <h2 className="text-xl font-semibold text-white">
-                No Notes Found
-              </h2>
+            <div className="rounded-3xl border border-dashed border-slate-700 bg-slate-900/60 p-10 text-center">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-slate-800 text-3xl">
+                📝
+              </div>
 
-              <p className="mt-2 text-slate-400">
-                Create your first note to get started.
+              <h2 className="text-2xl font-bold text-white">No Notes Found</h2>
+
+              <p className="mt-3 text-slate-400">
+                Create your first note to organize your study materials.
               </p>
             </div>
           ) : (
@@ -221,7 +223,7 @@ function Notes() {
             setEditingNote(null);
             setShowFormModal(true);
           }}
-          className="group fixed bottom-8 right-8 z-40 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:rounded-full"
+          className="group fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-40 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-700 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:rounded-full"
         >
           <Plus
             size={30}

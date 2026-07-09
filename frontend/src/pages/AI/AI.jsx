@@ -173,9 +173,9 @@ function AI() {
     <DashboardLayout>
       <PageTransition>
         <div className="mx-auto flex min-h-[calc(100vh-140px)] max-w-5xl flex-col">
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-white">
+              <h1 className="text-3xl font-bold text-white sm:text-4xl">
                 🤖 AI Study Assistant
               </h1>
 
@@ -185,7 +185,7 @@ function AI() {
               </p>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <button
                 onClick={exportChat}
                 disabled={messages.length === 0}
@@ -207,7 +207,7 @@ function AI() {
           </div>
 
           <div
-            className="flex-1 overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-6"
+            className="flex-1 overflow-y-auto rounded-3xl border border-slate-800 bg-slate-950 p-6"
           >
             {messages.length === 0 && (
               <>
@@ -237,8 +237,8 @@ function AI() {
             </div>
           </div>
 
-          <div className="sticky bottom-0 mt-6 border-t border-slate-800 bg-slate-950 pt-4">
-            <div className="flex gap-3">
+          <div className="sticky bottom-0 pb-2 mt-6 border-t border-slate-800 bg-slate-950 pt-4">
+            <div className="flex flex-wrap gap-3">
               <textarea
                 rows={2}
                 value={prompt}
@@ -256,7 +256,7 @@ function AI() {
               <button
                 onClick={() => handleAskAI()}
                 disabled={loading}
-                className="rounded-xl bg-indigo-600 px-8 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-xl bg-indigo-600 px-5 sm:px-8 font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "Sending..." : "Send"}
               </button>

@@ -50,3 +50,16 @@ export const getCurrentUser = async () => {
   const response = await api.get("/auth/me");
   return response.data;
 };
+
+// =====================================
+// Change Password
+// =====================================
+
+export const changePassword = async (passwordData) => {
+  const response = await api.put(
+    "/auth/change-password",
+    passwordData
+  );
+
+  return response.data;
+};

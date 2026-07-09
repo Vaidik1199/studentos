@@ -5,20 +5,22 @@ import { useEffect, useRef, useState } from "react";
 
 function Topbar({ setSidebarOpen }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
 
   // ✅ Added user data helper variables from localStorage
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-  const fullName = user.fullName || "Student";
-  const firstName = fullName.split(" ")[0];
-  const initials = fullName
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase();
+  const { user, logout } = useAuth();
+
+const fullName = user?.fullName || "Student";
+
+const firstName = fullName.split(" ")[0];
+
+const initials = fullName
+  .split(" ")
+  .map((word) => word[0])
+  .join("")
+  .toUpperCase();
 
   const handleLogout = () => {
     logout();
@@ -125,7 +127,7 @@ function Topbar({ setSidebarOpen }) {
                     </p>
 
                     <p className="text-sm text-slate-400">
-                      {user.email}
+                      {user?.email}
                     </p>
                   </div>
 

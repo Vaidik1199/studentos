@@ -1,7 +1,6 @@
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import PageTransition from "../../components/common/PageTransition";
 
-import AccountCard from "../../components/settings/AccountCard";
 import SecurityCard from "../../components/settings/SecurityCard";
 import AppearanceCard from "../../components/settings/AppearanceCard";
 import DangerZone from "../../components/settings/DangerZone";
@@ -32,8 +31,6 @@ function Settings() {
           </div>
 
           <div className="space-y-8">
-
-            <AccountCard />
 
             <SecurityCard />
 

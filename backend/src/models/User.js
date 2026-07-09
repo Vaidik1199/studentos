@@ -22,7 +22,13 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
     },
 
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+
     // Forgot Password OTP
+
     resetPasswordOtp: {
       type: String,
       default: null,

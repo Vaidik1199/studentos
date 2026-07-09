@@ -12,9 +12,19 @@ import {
   X,
   Settings,
 } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const fullName = user?.fullName || "Student";
+
+  const initials = fullName
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -202,13 +212,15 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             }
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white">
-              S
+              {initials}
             </div>
 
             <div className="min-w-0">
-              <p className="truncate font-semibold text-white">Student</p>
+              <p className="truncate font-semibold text-white">{fullName}</p>
 
-              <p className="truncate text-xs text-slate-400">Logged In</p>
+              <p className="truncate text-xs text-slate-400">
+                {user?.email || "Loading..."}
+              </p>
             </div>
           </NavLink>
 

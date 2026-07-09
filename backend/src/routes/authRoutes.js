@@ -1,12 +1,13 @@
 import express from "express";
+import protect from "../middleware/authMiddleware.js";
 import {
   registerUser,
   loginUser,
   forgotPassword,
   verifyOtp,
   resetPassword,
+  getCurrentUser,
 } from "../controllers/authController.js";
-
 const router = express.Router();
 
 // Authentication
@@ -19,5 +20,7 @@ router.post("/forgot-password", forgotPassword);
 router.post("/verify-otp", verifyOtp);
 
 router.post("/reset-password", resetPassword);
+
+router.get("/me", protect, getCurrentUser);
 
 export default router;

@@ -19,11 +19,13 @@ import StudyPlans from "../pages/StudyPlans/StudyPlans";
 import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 
+import Settings from "../pages/Settings/Settings";
+import Profile from "../pages/Profile/Profile";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Public Routes */}
 
         <Route path="/" element={<Home />} />
@@ -32,20 +34,11 @@ function AppRoutes() {
 
         <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        <Route
-          path="/verify-otp"
-          element={<VerifyOtp />}
-        />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
 
-        <Route
-          path="/reset-password"
-          element={<ResetPassword />}
-        />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* Protected Routes */}
 
@@ -125,6 +118,23 @@ function AppRoutes() {
 
         <Route path="*" element={<NotFound />} />
 
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

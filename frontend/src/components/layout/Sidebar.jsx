@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -10,6 +10,7 @@ import {
   LogOut,
   User,
   X,
+  Settings,
 } from "lucide-react";
 
 function Sidebar({ sidebarOpen, setSidebarOpen }) {
@@ -187,17 +188,48 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
         {/* User Section */}
         <div className="mt-auto border-t border-slate-800 bg-slate-900 p-4">
-          <div className="mb-4 flex items-center gap-3 rounded-xl bg-slate-800 p-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600">
-              <User size={20} />
+          {/* User Card */}
+
+          <NavLink
+            to="/profile"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `mb-4 flex items-center gap-3 rounded-2xl border p-3 transition ${
+                isActive
+                  ? "border-indigo-500 bg-indigo-600 text-white"
+                  : "border-slate-800 bg-slate-800/80 hover:border-indigo-500 hover:bg-slate-700"
+              }`
+            }
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 font-bold text-white">
+              S
             </div>
 
-            <div>
-              <p className="font-semibold text-white">Student</p>
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-white">Student</p>
 
-              <p className="text-xs text-slate-400">Logged In</p>
+              <p className="truncate text-xs text-slate-400">Logged In</p>
             </div>
-          </div>
+          </NavLink>
+
+          {/* Settings Button */}
+
+          <NavLink
+            to="/settings"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              `mb-3 flex w-full items-center justify-center gap-2 rounded-xl py-3 font-semibold transition ${
+                isActive
+                  ? "bg-indigo-600 text-white"
+                  : "border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700"
+              }`
+            }
+          >
+            <Settings size={18} />
+            Settings
+          </NavLink>
+
+          {/* Logout */}
 
           <button
             onClick={handleLogout}

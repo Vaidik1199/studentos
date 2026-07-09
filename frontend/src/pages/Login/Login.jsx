@@ -65,7 +65,8 @@ function Login() {
         <div className="flex justify-end">
           <button
             type="button"
-            className="text-sm text-indigo-400 hover:text-indigo-300"
+            onClick={() => navigate("/forgot-password")}
+            className="text-sm font-medium text-indigo-400 transition hover:text-indigo-300"
           >
             Forgot Password?
           </button>

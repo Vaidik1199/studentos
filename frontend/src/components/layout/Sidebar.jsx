@@ -45,16 +45,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       {/* Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/60 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/60 lg:hidden touch-none"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-hidden border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
+      <aside data-lenis-prevent
+  className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 no-scrollbar ${
+    sidebarOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 px-6 py-8">
           <div>
@@ -74,15 +74,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         </div>
 
         {/* Navigation - ✅ Updated <nav> classes with no-scrollbar */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
+        <nav className="flex-1 px-4 py-6">
           <NavLink
             to="/dashboard"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -94,10 +93,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/attendance"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -109,10 +107,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/assignments"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -124,10 +121,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/notes"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -139,10 +135,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/analytics"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -154,10 +149,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/ai"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -169,10 +163,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/study-planner"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -184,10 +177,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/study-plans"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `${navItem} ${
-                isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-slate-300 hover:bg-slate-800"
+              `${navItem} ${isActive
+                ? "bg-indigo-600 text-white shadow-lg"
+                : "text-slate-300 hover:bg-slate-800"
               }`
             }
           >
@@ -204,10 +196,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/profile"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `mb-4 flex items-center gap-3 rounded-2xl border p-3 transition ${
-                isActive
-                  ? "border-indigo-500 bg-indigo-600 text-white"
-                  : "border-slate-800 bg-slate-800/80 hover:border-indigo-500 hover:bg-slate-700"
+              `mb-4 flex items-center gap-3 rounded-2xl border p-3 transition ${isActive
+                ? "border-indigo-500 bg-indigo-600 text-white"
+                : "border-slate-800 bg-slate-800/80 hover:border-indigo-500 hover:bg-slate-700"
               }`
             }
           >
@@ -238,10 +229,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/settings"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `mb-3 flex w-full items-center justify-center gap-2 rounded-xl py-3 font-semibold transition ${
-                isActive
-                  ? "bg-indigo-600 text-white"
-                  : "border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700"
+              `mb-3 flex w-full items-center justify-center gap-2 rounded-xl py-3 font-semibold transition ${isActive
+                ? "bg-indigo-600 text-white"
+                : "border border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700"
               }`
             }
           >

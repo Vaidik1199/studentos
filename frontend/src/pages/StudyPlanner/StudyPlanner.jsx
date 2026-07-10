@@ -88,7 +88,6 @@ function StudyPlanner() {
     <DashboardLayout>
       <PageTransition>
         <div className="mx-auto max-w-7xl space-y-6 px-4 sm:space-y-8 sm:px-0">
-          
           {/* Header */}
           <div className="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 p-6 shadow-xl sm:rounded-3xl sm:p-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-sm font-medium text-indigo-300">
@@ -112,7 +111,8 @@ function StudyPlanner() {
             <div className="border-b border-slate-800 px-8 py-6">
               <h2 className="text-2xl font-bold text-white">Study Details</h2>
               <p className="mt-2 text-slate-400">
-                Fill in the information below to generate your personalized study schedule.
+                Fill in the information below to generate your personalized
+                study schedule.
               </p>
             </div>
 
@@ -126,6 +126,7 @@ function StudyPlanner() {
                   </label>
                   <input
                     type="date"
+                    min={new Date().toISOString().split("T")[0]}
                     value={examDate}
                     onChange={(e) => setExamDate(e.target.value)}
                     className="w-full rounded-xl border border-slate-700 bg-slate-900 p-3 text-base sm:p-4 sm:text-lg text-white outline-none transition focus:border-indigo-500 [color-scheme:dark]"
@@ -139,6 +140,8 @@ function StudyPlanner() {
                   </label>
                   <input
                     type="number"
+                    min="1"
+                    max="18"
                     placeholder="Example : 4"
                     value={studyHours}
                     onChange={(e) => setStudyHours(e.target.value)}
@@ -179,7 +182,8 @@ function StudyPlanner() {
                     className="w-full resize-none rounded-xl border border-slate-700 bg-slate-900 p-3 text-base sm:p-4 sm:text-lg text-white outline-none transition focus:border-indigo-500"
                   />
                   <p className="mt-3 text-sm text-slate-500">
-                    StudentOS AI will allocate extra study time for these subjects.
+                    StudentOS AI will allocate extra study time for these
+                    subjects.
                   </p>
                 </div>
               </div>

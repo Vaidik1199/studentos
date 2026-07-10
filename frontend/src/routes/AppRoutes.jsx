@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
@@ -23,120 +22,150 @@ import Settings from "../pages/Settings/Settings";
 import Profile from "../pages/Profile/Profile";
 
 function AppRoutes() {
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
+    <Routes>
+      {/* Public */}
 
-        <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={<Home />}
+      />
 
-        <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={
+            <Login />
+        }
+      />
 
-        <Route path="/register" element={<Register />} />
+      <Route
+        path="/register"
+        element={
+            <Register />
+        }
+      />
 
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route
+        path="/forgot-password"
+        element={
+            <ForgotPassword />
+        }
+      />
 
-        <Route path="/verify-otp" element={<VerifyOtp />} />
+      <Route
+        path="/verify-otp"
+        element={
+            <VerifyOtp />
+        }
+      />
 
-        <Route path="/reset-password" element={<ResetPassword />} />
+      <Route
+        path="/reset-password"
+        element={
+            <ResetPassword />
+        }
+      />
 
-        {/* Protected Routes */}
+      {/* Protected */}
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/attendance"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/attendance"
+        element={
+          <ProtectedRoute>
               <Attendance />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/notes"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRoute>
               <Notes />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/assignments"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/assignments"
+        element={
+          <ProtectedRoute>
               <Assignments />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/analytics"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
               <Analytics />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/ai"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/ai"
+        element={
+          <ProtectedRoute>
               <AI />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/study-planner"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/study-planner"
+        element={
+          <ProtectedRoute>
               <StudyPlanner />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/study-plans"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/study-plans"
+        element={
+          <ProtectedRoute>
               <StudyPlans />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        {/* 404 */}
-
-        <Route path="*" element={<NotFound />} />
-
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
               <Settings />
-            </ProtectedRoute>
-          }
-        />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
               <Profile />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="*"
+        element={
+            <NotFound />
+        }
+      />
+    </Routes>
   );
 }
 

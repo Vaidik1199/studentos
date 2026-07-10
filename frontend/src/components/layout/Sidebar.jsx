@@ -51,10 +51,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       )}
 
       <aside data-lenis-prevent
-  className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 no-scrollbar ${
-    sidebarOpen ? "translate-x-0" : "-translate-x-full"
-  }`}
->
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-y-auto border-r border-slate-800 bg-slate-900 transition-transform duration-300 lg:static lg:flex lg:translate-x-0 no-scrollbar ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-800 px-6 py-8">
           <div>

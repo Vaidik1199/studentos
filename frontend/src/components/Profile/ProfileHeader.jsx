@@ -35,7 +35,7 @@ function ProfileHeader({ user, onEdit, onProfilePictureUpdate }) {
         <div className="absolute -bottom-12 left-8">
           <div
             onClick={() => fileInputRef.current.click()}
-            className="group relative h-24 w-24 cursor-pointer overflow-hidden rounded-full border-4 border-slate-900 bg-slate-800 shadow-xl"
+            className="group relative h-35 w-35 cursor-pointer overflow-hidden rounded-full border-4 border-slate-900 bg-slate-800 shadow-xl"
           >
             {user?.profilePicture?.url ? (
               <img

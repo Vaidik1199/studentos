@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import PageTransition from "../../components/common/PageTransition";
 
 import ProfileHeader from "../../components/Profile/ProfileHeader";
-import ProfileStats from "../../components/Profile/ProfileStats";
 import AccountInfo from "../../components/Profile/AccountInfo";
 import QuickActions from "../../components/Profile/QuickActions";
 import EditProfileModal from "../../components/Profile/EditProfileModal";
@@ -13,6 +13,33 @@ import EditProfileModal from "../../components/Profile/EditProfileModal";
 import { getCurrentUser } from "../../services/authService";
 import { updateProfile } from "../../services/userService";
 import { useAuth } from "../../contexts/AuthContext";
+
+const container = {
+  hidden: {},
+
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const fadeUp = {
+  hidden: {
+    opacity: 0,
+    y: 22,
+  },
+
+  show: {
+    opacity: 1,
+    y: 0,
+
+    transition: {
+      duration: 0.45,
+      ease: "easeOut",
+    },
+  },
+};
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -57,6 +84,7 @@ function Profile() {
 
       setFullName(response.data.fullName);
       setEmail(response.data.email);
+
       updateUser(response.data);
 
       localStorage.setItem("user", JSON.stringify(response.data));
@@ -65,7 +93,9 @@ function Profile() {
 
       setEditOpen(false);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update profile.");
+      toast.error(
+        error.response?.data?.message || "Failed to update profile."
+      );
     } finally {
       setSaving(false);
     }
@@ -74,27 +104,41 @@ function Profile() {
   return (
     <DashboardLayout>
       <PageTransition>
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <ProfileHeader
-            user={user}
-            onEdit={() => setEditOpen(true)}
-            onProfilePictureUpdate={(updatedUser) => {
-              setUser(updatedUser);
-            }}
-          />
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="w-full"
+        >
+          <motion.div variants={fadeUp}>
+            <ProfileHeader
+              user={user}
+              onEdit={() => setEditOpen(true)}
+              onProfilePictureUpdate={(updatedUser) => {
+                setUser(updatedUser);
+              }}
+            />
+          </motion.div>
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-3">
-            <div className="space-y-8 lg:col-span-2">
+          <motion.div
+            variants={container}
+            className="mt-8 grid gap-8 xl:grid-cols-[2fr_1fr]"
+          >
+            <motion.div
+              variants={fadeUp}
+              className="space-y-8"
+            >
               <AccountInfo user={user} />
-            </div>
+            </motion.div>
 
-            <div className="space-y-8">
-              <ProfileStats />
-
+            <motion.div
+              variants={fadeUp}
+              className="space-y-8"
+            >
               <QuickActions />
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
 
         <EditProfileModal
           open={editOpen}

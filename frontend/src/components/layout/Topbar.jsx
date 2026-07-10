@@ -1,5 +1,11 @@
-import { Menu, User, LogOut, ChevronDown, Settings } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import {
+  Menu,
+  User,
+  LogOut,
+  ChevronDown,
+  Settings,
+  Sparkles,
+} from "lucide-react"; import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 
@@ -43,77 +49,122 @@ function Topbar({ setSidebarOpen }) {
 
   let greeting = "Good Evening";
 
-  if (hours < 12) greeting = "Good Morning";
-  else if (hours < 17) greeting = "Good Afternoon";
+  if (hours < 12 && hours > 4) greeting = "Good Morning";
+  else if (12 <= hours && hours < 17) greeting = "Good Afternoon";
 
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-      <div className="flex h-20 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        {/* Left */}
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-30 border-b border-slate-800/70 bg-slate-950/85 backdrop-blur-2xl">
+      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+
+        {/* LEFT */}
+
+        <div className="flex min-w-0 items-center gap-4">
+
           <button
             onClick={() => setSidebarOpen(true)}
-            className="rounded-xl bg-slate-900 p-3 transition hover:bg-slate-800 lg:hidden"
+            className="rounded-2xl border border-slate-800 bg-slate-900/70 p-3 transition-all duration-300 hover:border-indigo-500 hover:bg-slate-800 lg:hidden"
           >
             <Menu size={22} />
           </button>
 
-          <div>
-            <h2 className="text-xl font-bold text-white sm:text-2xl">
-              {greeting} 👋
-            </h2>
+          <div className="min-w-0">
 
-            <p className="mt-1 hidden text-sm text-slate-400 sm:block">
-              Ready to study today?
+            <h1 className="mt-1 truncate text-[28px] font-black tracking-tight text-white sm:text-[30px]">
+
+              {greeting}
+
+              <span className="ml-2 text-slate-300">
+                {firstName}
+              </span>
+
+            </h1>
+
+            <p className="mt-1 hidden text-sm text-slate-500 md:block">
+              Keep learning. Keep building. Every small step matters.
             </p>
+
           </div>
+
         </div>
 
-        {/* Right */}
-        <div ref={profileRef} className="relative">
+        {/* RIGHT */}
+
+        <div
+          ref={profileRef}
+          className="relative flex shrink-0 items-center"
+        >
+
           <button
             onClick={() => setShowProfile(!showProfile)}
-            className="flex items-center gap-3 rounded-2xl bg-slate-900 px-3 py-2 transition hover:bg-slate-800"
+            className="group flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/70 px-3 py-2 transition-all duration-300 hover:border-slate-600 hover:bg-slate-800 hover:shadow-xl hover:shadow-black/20"
           >
-            {/* ✅ Replaced "V" with initials */}
-            <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-indigo-600 font-semibold text-white">
-              {user?.profilePicture?.url ? (
-                <img
-                  src={user.profilePicture.url}
-                  alt={fullName}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                initials
-              )}
+
+            {/* Avatar */}
+
+            <div className="overflow-hidden rounded-full">
+
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 font-bold text-white">
+
+                {user?.profilePicture?.url ? (
+                  <img
+                    src={user.profilePicture.url}
+                    alt={fullName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  initials
+                )}
+
+              </div>
+
             </div>
 
-            {/* ✅ Replaced static text with firstName and welcome message */}
-            <div className="hidden text-left lg:block">
-              <p className="font-semibold text-white">{firstName}</p>
+            {/* User */}
 
-              <p className="text-xs text-slate-400">Welcome Back</p>
+            <div className="hidden min-w-0 text-left xl:block">
+
+              <p className="truncate text-sm font-semibold text-white">
+                {fullName}
+              </p>
+
+              <p className="text-xs text-slate-500">
+                Student Account
+              </p>
+
             </div>
 
             <ChevronDown
               size={18}
-              className={`hidden text-slate-400 transition duration-200 lg:block ${
-                showProfile ? "rotate-180" : ""
-              }`}
+              className={`hidden transition-all duration-300 xl:block ${showProfile
+                  ? "rotate-180 text-white"
+                  : "text-slate-500"
+                }`}
             />
-          </button>
 
+          </button>
           {showProfile && (
-            <div className="absolute right-0 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl">
+            <div className="absolute right-0 top-full z-50 mt-4 w-[92vw] max-w-[340px] overflow-hidden rounded-[28px] border border-slate-800 bg-slate-900/95 shadow-[0_20px_60px_rgba(0,0,0,.55)] backdrop-blur-2xl">
+
+              {/* Header */}
+
               <button
                 onClick={() => {
                   navigate("/profile");
                   setShowProfile(false);
                 }}
-                className="w-full border-b border-slate-800 p-5 text-left transition hover:bg-slate-800"
+                className="group relative w-full overflow-hidden border-b border-slate-800 px-6 py-6 text-left transition-all duration-300 hover:bg-slate-800/60"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-indigo-600 font-semibold text-white">
+
+                {/* Background Glow */}
+
+                <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-indigo-500/10 blur-3xl transition group-hover:bg-indigo-500/20" />
+
+                <div className="relative flex items-center gap-4">
+
+                  {/* Avatar */}
+
+                  <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-2 border-slate-700 bg-gradient-to-br from-indigo-500 via-violet-500 to-cyan-500 text-lg font-bold text-white shadow-lg">
+
                     {user?.profilePicture?.url ? (
                       <img
                         src={user.profilePicture.url}
@@ -123,30 +174,60 @@ function Topbar({ setSidebarOpen }) {
                     ) : (
                       initials
                     )}
+
                   </div>
 
-                  <div className="min-w-0">
-                    <p className="truncate font-semibold text-white">
-                      {fullName}
-                    </p>
+                  {/* User */}
 
-                    <p className="truncate text-sm text-slate-400">
+                  <div className="min-w-0 flex-1">
+
+                    <h3 className="truncate text-lg font-bold text-white">
+                      {fullName}
+                    </h3>
+
+                    <p className="mt-1 truncate text-sm text-slate-400">
                       {user?.email}
                     </p>
+
+                    <div className="mt-3 inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1">
+
+                      <span className="mr-2 h-2 w-2 rounded-full bg-emerald-400" />
+
+                      <span className="text-xs font-medium text-emerald-400">
+                        Student Account
+                      </span>
+
+                    </div>
+
                   </div>
+
                 </div>
+
               </button>
 
-              <div className="py-2">
+              {/* Navigation */}
+
+              <div className="space-y-1 p-3">
                 <button
                   onClick={() => {
                     navigate("/profile");
                     setShowProfile(false);
                   }}
-                  className="flex w-full items-center gap-3 px-5 py-3 text-left font-medium text-slate-300 transition-all duration-200 hover:bg-slate-800 hover:text-white"
+                  className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-300 hover:bg-slate-800 hover:translate-x-1"
                 >
-                  <User size={18} />
-                  My Profile
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-500/10 transition group-hover:bg-indigo-500/20">
+                    <User size={19} className="text-indigo-400" />
+                  </div>
+
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-white">
+                      My Profile
+                    </p>
+
+                    <p className="text-xs text-slate-400">
+                      View and manage your account
+                    </p>
+                  </div>
                 </button>
 
                 <button
@@ -154,25 +235,48 @@ function Topbar({ setSidebarOpen }) {
                     navigate("/settings");
                     setShowProfile(false);
                   }}
-                  className="flex w-full items-center gap-3 px-5 py-3 text-left text-slate-300 transition hover:bg-slate-800"
+                  className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-300 hover:bg-slate-800 hover:translate-x-1"
                 >
-                  <Settings size={18} />
-                  Settings
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-500/10 transition group-hover:bg-violet-500/20">
+                    <Settings size={19} className="text-violet-400" />
+                  </div>
+
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-white">
+                      Settings
+                    </p>
+
+                    <p className="text-xs text-slate-400">
+                      Preferences & security
+                    </p>
+                  </div>
                 </button>
 
-                <div className="my-2 border-t border-slate-800" />
+                <div className="my-3 border-t border-slate-800" />
 
                 <button
                   onClick={handleLogout}
-                  className="flex w-full items-center gap-3 px-5 py-3 text-left text-red-400 transition hover:bg-red-500/10"
+                  className="group flex w-full items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-300 hover:bg-red-500/10 hover:translate-x-1"
                 >
-                  <LogOut size={18} />
-                  Logout
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 transition group-hover:bg-red-500/20">
+                    <LogOut size={19} className="text-red-400" />
+                  </div>
+
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-red-400">
+                      Logout
+                    </p>
+
+                    <p className="text-xs text-slate-500">
+                      Sign out from StudentOS
+                    </p>
+                  </div>
                 </button>
               </div>
             </div>
           )}
         </div>
+
       </div>
     </header>
   );

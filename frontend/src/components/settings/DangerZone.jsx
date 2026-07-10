@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { AlertTriangle, Trash2 } from "lucide-react";
+import {
+  AlertTriangle,
+  Trash2,
+  ShieldAlert,
+  Lock,
+} from "lucide-react";
 
 import { deleteAccount } from "../../services/userService";
 
@@ -42,16 +47,20 @@ function DangerZone() {
   };
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-red-500/20 bg-red-500/5">
+    <div className="overflow-hidden rounded-[30px] border border-red-500/20 bg-slate-900/70 shadow-2xl backdrop-blur-xl">
 
-      <div className="border-b border-red-500/20 p-6">
+      {/* Header */}
 
-        <div className="flex items-center gap-4">
+      <div className="relative overflow-hidden border-b border-red-500/20 p-8">
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10">
+        <div className="absolute -right-16 -top-16 h-60 w-60 rounded-full bg-red-500/10 blur-3xl" />
+
+        <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center">
+
+          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-red-500/20 to-rose-500/20 ring-1 ring-red-500/20">
 
             <AlertTriangle
-              size={28}
+              size={30}
               className="text-red-400"
             />
 
@@ -59,12 +68,13 @@ function DangerZone() {
 
           <div>
 
-            <h2 className="text-2xl font-bold text-white">
+            <h2 className="text-3xl font-black tracking-tight text-white">
               Danger Zone
             </h2>
 
-            <p className="mt-1 text-slate-400">
-              Permanently delete your StudentOS account.
+            <p className="mt-2 max-w-xl leading-7 text-slate-400">
+              These actions are permanent and cannot be undone. Please proceed
+              only if you're absolutely sure.
             </p>
 
           </div>
@@ -73,46 +83,95 @@ function DangerZone() {
 
       </div>
 
-      <div className="space-y-6 p-6">
+      {/* Body */}
 
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-5">
+      <div className="space-y-7 p-7">
 
-          <h3 className="font-semibold text-red-300">
-            This action cannot be undone.
-          </h3>
+        {/* Warning */}
 
-          <p className="mt-2 text-slate-300">
-            All your notes, attendance, assignments,
-            study plans and analytics will be permanently removed.
-          </p>
+        <div className="rounded-3xl border border-red-500/20 bg-gradient-to-r from-red-500/10 to-transparent p-6">
+
+          <div className="flex items-start gap-4">
+
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-500/10">
+
+              <ShieldAlert
+                size={24}
+                className="text-red-400"
+              />
+
+            </div>
+
+            <div>
+
+              <h3 className="text-lg font-bold text-red-300">
+                Permanent Account Deletion
+              </h3>
+
+              <p className="mt-3 leading-7 text-slate-300">
+                Deleting your account will permanently remove your
+                <span className="font-semibold text-white">
+                  {" "}notes
+                </span>,
+                <span className="font-semibold text-white">
+                  {" "}attendance
+                </span>,
+                <span className="font-semibold text-white">
+                  {" "}assignments
+                </span>,
+                <span className="font-semibold text-white">
+                  {" "}study plans
+                </span>,
+                <span className="font-semibold text-white">
+                  {" "}analytics
+                </span>
+                {" "}and all associated data from StudentOS.
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
+        {/* Password */}
+
         <div>
 
-          <label className="mb-2 block text-sm text-slate-400">
+          <label className="mb-3 flex items-center gap-2 text-sm font-medium text-slate-300">
+
+            <Lock
+              size={16}
+              className="text-red-400"
+            />
+
             Confirm your password
+
           </label>
 
           <input
             type="password"
-            placeholder="Enter your password"
+            placeholder="Enter your password to continue"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-red-500"
+            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-5 py-4 text-white outline-none transition-all duration-300 placeholder:text-slate-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
           />
 
         </div>
 
+        {/* Delete Button */}
+
         <button
           onClick={handleDelete}
           disabled={loading}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-red-600 to-rose-600 py-4 text-base font-bold text-white shadow-xl shadow-red-600/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/40 disabled:cursor-not-allowed disabled:opacity-60"
         >
 
-          <Trash2 size={18} />
+          <Trash2 size={20} />
 
-          {loading ? "Deleting..." : "Delete My Account"}
+          {loading
+            ? "Deleting Account..."
+            : "Delete My Account"}
 
         </button>
 

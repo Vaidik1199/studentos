@@ -10,6 +10,7 @@ function BackToTop() {
         "/attendance",
         "/assignments",
         "/notes",
+        "/ai",
     ];
 
     if (hiddenRoutes.includes(location.pathname)) {

@@ -160,21 +160,21 @@ function Footer() {
 
             {/* Premium Social Buttons Container */}
             <div className="mt-10 flex gap-4">
-              <a
+              <motion.a
                 href="https://github.com/Vaidik1199"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20"
                 whileHover={{
                   y: -6,
                   scale: 1.08,
                   rotate: -2,
                 }}
+                className="rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20"
               >
                 GitHub
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href="https://www.linkedin.com/in/vaidik-choudhary-a21b40294/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -186,9 +186,9 @@ function Footer() {
                 }}
               >
                 LinkedIn
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
                 href="mailto:studentos.web@gmail.com"
                 className="rounded-xl bg-slate-900 p-3 text-white transition-all duration-300 hover:-translate-y-1 hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20"
                 whileHover={{
@@ -198,7 +198,7 @@ function Footer() {
                 }}
               >
                 <Mail size={20} />
-              </a>
+              </motion.a>
             </div>
           </motion.div>
 

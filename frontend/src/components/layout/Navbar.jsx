@@ -49,11 +49,14 @@ function Navbar() {
   }, []);
 
   const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({
-      behavior: "smooth",
-    });
-
     setMenuOpen(false);
+
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 350); // same as AnimatePresence duration
   };
 
   return (
@@ -70,11 +73,10 @@ function Navbar() {
         duration: 0.8,
         ease: "easeOut",
       }}
-      className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled
+      className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
           ? "border-b border-slate-800/70 bg-slate-950/70 shadow-2xl backdrop-blur-2xl"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
@@ -207,7 +209,7 @@ function Navbar() {
         </motion.button>
       </div>
 
-            {/* Mobile Menu */}
+      {/* Mobile Menu */}
 
       <AnimatePresence>
         {menuOpen && (

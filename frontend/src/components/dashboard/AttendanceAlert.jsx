@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function AttendanceAlert({ attendance = [] }) {
   if (attendance.length === 0) {
     return (
@@ -35,58 +37,75 @@ function AttendanceAlert({ attendance = [] }) {
     );
   }
 
-  const lowAttendance = attendance.filter((subject) => {
-    const percentage =
-      subject.totalClasses === 0
-        ? 0
-        : (subject.attendedClasses / subject.totalClasses) * 100;
+  const lowAttendance = attendance
+    .filter((subject) => {
+      const percentage =
+        subject.totalClasses === 0
+          ? 0
+          : (subject.attendedClasses / subject.totalClasses) * 100;
 
-    return percentage < 75;
-  });
+      return percentage < 75;
+    })
+    .sort((a, b) => {
+      const aPercentage =
+        a.totalClasses === 0
+          ? 0
+          : (a.attendedClasses / a.totalClasses) * 100;
+
+      const bPercentage =
+        b.totalClasses === 0
+          ? 0
+          : (b.attendedClasses / b.totalClasses) * 100;
+
+      return aPercentage - bPercentage; // Lowest attendance first
+    });
+
+  const criticalSubjects = lowAttendance.slice(0, 2);
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
-      {/* Header */}
+  <div className="rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+    {/* Header */}
 
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-white">
-            Attendance Alerts
-          </h2>
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h2 className="text-2xl font-bold text-white">
+          Attendance Alerts
+        </h2>
 
-          <p className="text-sm text-slate-400">
-            Subjects below the 75% attendance requirement.
-          </p>
-        </div>
-
-        <div
-          className={`flex h-11 min-w-[44px] items-center justify-center rounded-2xl px-3 font-bold ${
-            lowAttendance.length === 0
-              ? "bg-emerald-500/20 text-emerald-400"
-              : "bg-red-500/20 text-red-400"
-          }`}
-        >
-          {lowAttendance.length}
-        </div>
+        <p className="text-sm text-slate-400">
+          Subjects below the 75% attendance requirement.
+        </p>
       </div>
 
-      {lowAttendance.length === 0 ? (
-        <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-green-500/5 p-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20 text-3xl">
-            🎉
-          </div>
+      <div
+        className={`flex h-11 min-w-[44px] items-center justify-center rounded-2xl px-3 font-bold ${
+          lowAttendance.length === 0
+            ? "bg-emerald-500/20 text-emerald-400"
+            : "bg-red-500/20 text-red-400"
+        }`}
+      >
+        {lowAttendance.length}
+      </div>
+    </div>
 
-          <h3 className="text-xl font-bold text-emerald-400">
-            Excellent Attendance
-          </h3>
-
-          <p className="mt-2 text-slate-300">
-            Every subject is above the required attendance percentage.
-          </p>
+    {lowAttendance.length === 0 ? (
+      <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-green-500/5 p-8 text-center">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20 text-3xl">
+          🎉
         </div>
-      ) : (
+
+        <h3 className="text-xl font-bold text-emerald-400">
+          Excellent Attendance
+        </h3>
+
+        <p className="mt-2 text-slate-300">
+          Every subject is above the required attendance percentage.
+        </p>
+      </div>
+    ) : (
+      <>
         <div className="space-y-5">
-          {lowAttendance.map((subject) => {
+          {criticalSubjects.map((subject) => {
             const percentage =
               subject.totalClasses === 0
                 ? 0
@@ -115,7 +134,8 @@ function AttendanceAlert({ attendance = [] }) {
                     </h3>
 
                     <p className="mt-1 text-sm text-slate-400">
-                      {subject.attendedClasses} / {subject.totalClasses} classes attended
+                      {subject.attendedClasses} / {subject.totalClasses} classes
+                      attended
                     </p>
                   </div>
 
@@ -142,8 +162,19 @@ function AttendanceAlert({ attendance = [] }) {
             );
           })}
         </div>
-      )}
-    </div>
-  );
+
+        {lowAttendance.length > 2 && (
+          <Link
+            to="/attendance"
+            className="mt-5 block text-center text-sm font-medium text-indigo-400 transition hover:text-indigo-300"
+          >
+            Showing the 2 most critical subjects • View all{" "}
+            {lowAttendance.length} alerts →
+          </Link>
+        )}
+      </>
+    )}
+  </div>
+);
 }
 export default AttendanceAlert;

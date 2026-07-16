@@ -96,24 +96,12 @@ await User.findByIdAndDelete(user._id);
 
 export const updateProfile = async (req, res) => {
   try {
-    const { fullName, email } = req.body;
+    const { fullName } = req.body;
 
-    if (!fullName || !email) {
+    if (!fullName) {
       return res.status(400).json({
         success: false,
-        message: "Full name and email are required.",
-      });
-    }
-
-    const existingUser = await User.findOne({
-      email,
-      _id: { $ne: req.user._id },
-    });
-
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "Email is already in use.",
+        message: "Full name is required.",
       });
     }
 
@@ -121,7 +109,6 @@ export const updateProfile = async (req, res) => {
       req.user._id,
       {
         fullName,
-        email,
       },
       {
         new: true,
@@ -134,7 +121,6 @@ export const updateProfile = async (req, res) => {
       message: "Profile updated successfully.",
       data: updatedUser,
     });
-
   } catch (error) {
     console.error(error);
 

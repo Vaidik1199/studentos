@@ -77,7 +77,6 @@ function Profile() {
 
       const response = await updateProfile({
         fullName,
-        email,
       });
 
       setUser(response.data);
@@ -86,8 +85,6 @@ function Profile() {
       setEmail(response.data.email);
 
       updateUser(response.data);
-
-      localStorage.setItem("user", JSON.stringify(response.data));
 
       toast.success(response.message);
 
@@ -116,6 +113,7 @@ function Profile() {
               onEdit={() => setEditOpen(true)}
               onProfilePictureUpdate={(updatedUser) => {
                 setUser(updatedUser);
+                updateUser(updatedUser);
               }}
             />
           </motion.div>

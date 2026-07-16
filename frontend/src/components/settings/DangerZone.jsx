@@ -1,3 +1,4 @@
+import { useAuth } from "../../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -13,11 +14,15 @@ import { deleteAccount } from "../../services/userService";
 function DangerZone() {
   const navigate = useNavigate();
 
+  const { user } = useAuth();
+
+  const isGoogleUser = user?.provider === "google";
+
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    if (!password) {
+    if (!isGoogleUser && !password) {
       return toast.error("Please enter your password.");
     }
 
@@ -136,28 +141,58 @@ function DangerZone() {
 
         {/* Password */}
 
-        <div>
+        {!isGoogleUser ? (
 
-          <label className="mb-3 flex items-center gap-2 text-sm font-medium text-slate-300">
+          <div>
 
-            <Lock
-              size={16}
-              className="text-red-400"
+            <label className="mb-3 flex items-center gap-2 text-sm font-medium text-slate-300">
+
+              <Lock
+                size={16}
+                className="text-red-400"
+              />
+
+              Confirm your password
+
+            </label>
+
+            <input
+              type="password"
+              placeholder="Enter your password to continue"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-5 py-4 text-white outline-none transition-all duration-300 placeholder:text-slate-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
             />
 
-            Confirm your password
+          </div>
 
-          </label>
+        ) : (
 
-          <input
-            type="password"
-            placeholder="Enter your password to continue"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-5 py-4 text-white outline-none transition-all duration-300 placeholder:text-slate-500 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
-          />
+          <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-5">
 
-        </div>
+            <p className="leading-7 text-slate-300">
+
+              Your account is authenticated through
+
+              <span className="font-semibold text-white">
+                {" "}Google Sign-In
+              </span>.
+
+              <br /><br />
+
+              No password confirmation is required.
+
+              Deleting your StudentOS account will
+              <span className="font-semibold text-red-300">
+                {" "}NOT
+              </span>
+              delete your Google account.
+
+            </p>
+
+          </div>
+
+        )}
 
         {/* Delete Button */}
 
@@ -171,7 +206,9 @@ function DangerZone() {
 
           {loading
             ? "Deleting Account..."
-            : "Delete My Account"}
+            : isGoogleUser
+              ? "Delete StudentOS Account"
+              : "Delete My Account"}
 
         </button>
 

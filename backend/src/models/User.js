@@ -18,23 +18,54 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: [true, "Password is required"],
-      minlength: 6,
+      default: "",
     },
 
     profilePicture: {
-  url: {
-    type: String,
-    default: "",
-  },
+      url: {
+        type: String,
+        default: "",
+      },
 
-  publicId: {
-    type: String,
-    default: "",
-  },
-},
+      publicId: {
+        type: String,
+        default: "",
+      },
+    },
 
-    // Forgot Password OTP
+    // ==========================
+    // Authentication
+    // ==========================
+
+    provider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
+    },
+
+    googleId: {
+      type: String,
+      default: "",
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    registrationOtp: {
+      type: String,
+      default: null,
+    },
+
+    registrationOtpExpiry: {
+      type: Date,
+      default: null,
+    },
+
+    // ==========================
+    // Forgot Password
+    // ==========================
 
     resetPasswordOtp: {
       type: String,

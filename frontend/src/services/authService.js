@@ -10,11 +10,49 @@ export const registerUser = async (userData) => {
 };
 
 // =========================
+// Verify Registration OTP
+// =========================
+
+export const verifyRegistrationOtp = async (data) => {
+  const response = await api.post(
+    "/auth/verify-registration",
+    data
+  );
+
+  return response.data;
+};
+
+// =========================
+// Resend Registration OTP
+// =========================
+
+export const resendRegistrationOtp = async (email) => {
+  const response = await api.post(
+    "/auth/resend-registration-otp",
+    { email }
+  );
+
+  return response.data;
+};
+
+// =========================
 // Login
 // =========================
 
 export const loginUser = async (userData) => {
   const response = await api.post("/auth/login", userData);
+  return response.data;
+};
+
+// =========================
+// Google Login
+// =========================
+
+export const googleLogin = async (credential) => {
+  const response = await api.post("/auth/google", {
+    credential,
+  });
+
   return response.data;
 };
 
@@ -44,7 +82,6 @@ export const resetPassword = async (data) => {
   const response = await api.post("/auth/reset-password", data);
   return response.data;
 };
-
 
 export const getCurrentUser = async () => {
   const response = await api.get("/auth/me");

@@ -20,6 +20,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import Settings from "../pages/Settings/Settings";
 import Profile from "../pages/Profile/Profile";
+import VerifyRegistration from "../pages/Auth/VerifyRegistration";
 
 function AppRoutes() {
 
@@ -35,35 +36,40 @@ function AppRoutes() {
       <Route
         path="/login"
         element={
-            <Login />
+          <Login />
         }
       />
 
       <Route
         path="/register"
         element={
-            <Register />
+          <Register />
         }
+      />
+
+      <Route
+        path="/verify-registration"
+        element={<VerifyRegistration />}
       />
 
       <Route
         path="/forgot-password"
         element={
-            <ForgotPassword />
+          <ForgotPassword />
         }
       />
 
       <Route
         path="/verify-otp"
         element={
-            <VerifyOtp />
+          <VerifyOtp />
         }
       />
 
       <Route
         path="/reset-password"
         element={
-            <ResetPassword />
+          <ResetPassword />
         }
       />
 
@@ -73,7 +79,7 @@ function AppRoutes() {
         path="/dashboard"
         element={
           <ProtectedRoute>
-              <Dashboard />
+            <Dashboard />
           </ProtectedRoute>
         }
       />
@@ -82,7 +88,7 @@ function AppRoutes() {
         path="/attendance"
         element={
           <ProtectedRoute>
-              <Attendance />
+            <Attendance />
           </ProtectedRoute>
         }
       />
@@ -91,7 +97,7 @@ function AppRoutes() {
         path="/notes"
         element={
           <ProtectedRoute>
-              <Notes />
+            <Notes />
           </ProtectedRoute>
         }
       />
@@ -100,7 +106,7 @@ function AppRoutes() {
         path="/assignments"
         element={
           <ProtectedRoute>
-              <Assignments />
+            <Assignments />
           </ProtectedRoute>
         }
       />
@@ -109,7 +115,7 @@ function AppRoutes() {
         path="/analytics"
         element={
           <ProtectedRoute>
-              <Analytics />
+            <Analytics />
           </ProtectedRoute>
         }
       />
@@ -118,7 +124,7 @@ function AppRoutes() {
         path="/ai"
         element={
           <ProtectedRoute>
-              <AI />
+            <AI />
           </ProtectedRoute>
         }
       />
@@ -127,7 +133,7 @@ function AppRoutes() {
         path="/study-planner"
         element={
           <ProtectedRoute>
-              <StudyPlanner />
+            <StudyPlanner />
           </ProtectedRoute>
         }
       />
@@ -136,7 +142,7 @@ function AppRoutes() {
         path="/study-plans"
         element={
           <ProtectedRoute>
-              <StudyPlans />
+            <StudyPlans />
           </ProtectedRoute>
         }
       />
@@ -145,7 +151,7 @@ function AppRoutes() {
         path="/settings"
         element={
           <ProtectedRoute>
-              <Settings />
+            <Settings />
           </ProtectedRoute>
         }
       />
@@ -154,7 +160,7 @@ function AppRoutes() {
         path="/profile"
         element={
           <ProtectedRoute>
-              <Profile />
+            <Profile />
           </ProtectedRoute>
         }
       />
@@ -162,7 +168,7 @@ function AppRoutes() {
       <Route
         path="*"
         element={
-            <NotFound />
+          <NotFound />
         }
       />
     </Routes>

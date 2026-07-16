@@ -12,6 +12,7 @@ import PageTransition from "../../components/common/PageTransition";
 import SecurityCard from "../../components/settings/SecurityCard";
 import AppearanceCard from "../../components/settings/AppearanceCard";
 import DangerZone from "../../components/settings/DangerZone";
+import { useAuth } from "../../contexts/AuthContext";
 
 const container = {
   hidden: {},
@@ -37,6 +38,9 @@ const fadeUp = {
 };
 
 function Settings() {
+  const { user } = useAuth();
+
+  const isGoogleUser = user?.provider === "google";
   return (
     <DashboardLayout>
       <PageTransition>
@@ -117,9 +121,11 @@ function Settings() {
             variants={container}
             className="mt-10 space-y-8"
           >
-            <motion.div variants={fadeUp}>
-              <SecurityCard />
-            </motion.div>
+            {!isGoogleUser && (
+              <motion.div variants={fadeUp}>
+                <SecurityCard />
+              </motion.div>
+            )}
 
             <motion.div variants={fadeUp}>
               <AppearanceCard />

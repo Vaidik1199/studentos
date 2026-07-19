@@ -10,7 +10,7 @@ function GoogleAuthButton({
         theme="filled_black"
         shape="pill"
         size="large"
-        width={320}
+        width="100%"
         text="continue_with"
         onSuccess={onSuccess}
         onError={onError}

@@ -1,14 +1,20 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // STARTTLS
-  requireTLS: true,
+  service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+});
+
+transporter.verify((error) => {
+  if (error) {
+    console.error("SMTP VERIFY FAILED");
+    console.error(error);
+  } else {
+    console.log("SMTP VERIFIED");
+  }
 });
 
 export default transporter;

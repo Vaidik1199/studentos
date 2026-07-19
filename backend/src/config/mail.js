@@ -1,21 +1,14 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // STARTTLS
+  requireTLS: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-});
-
-// Verify SMTP connection
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("❌ Email configuration failed.");
-    console.error(error.message);
-  } else {
-    console.log("📧 Email service connected successfully.");
-  }
 });
 
 export default transporter;

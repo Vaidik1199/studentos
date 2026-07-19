@@ -1,20 +1,19 @@
 import { GoogleLogin } from "@react-oauth/google";
 
-function GoogleAuthButton({
-  onSuccess,
-  onError,
-}) {
+function GoogleAuthButton({ onSuccess, onError }) {
   return (
     <div className="space-y-5">
-      <GoogleLogin
-        theme="filled_black"
-        shape="pill"
-        size="large"
-        width="320"
-        text="continue_with"
-        onSuccess={onSuccess}
-        onError={onError}
-      />
+      <div className="flex justify-center overflow-hidden">
+        <GoogleLogin
+          onSuccess={onSuccess}
+          onError={onError}
+          theme="filled_black"
+          shape="pill"
+          size="large"
+          text="continue_with"
+          width="280"
+        />
+      </div>
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">

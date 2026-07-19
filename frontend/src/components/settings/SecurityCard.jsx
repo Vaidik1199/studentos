@@ -337,8 +337,8 @@ function SecurityCard() {
 
                 <button
                   onClick={() => {
-                    localStorage.removeItem("token");
-                    window.location.href = "/login";
+                    logout();
+                    navigate("/login", { replace: true });
                   }}
                   className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 to-rose-600 px-7 py-4 font-semibold text-white shadow-xl shadow-red-600/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-red-500/40"
                 >

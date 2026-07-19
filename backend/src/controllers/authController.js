@@ -58,11 +58,16 @@ export const registerUser = async (req, res) => {
       await user.save();
     }
 
-    await sendEmail({
-      to: email,
-      subject: "Verify your StudentOS Account",
-      html: registrationOtpTemplate(fullName, otp),
-    });
+    try {
+      await sendEmail({
+        to: email,
+        subject: "Verify your StudentOS Account",
+        html: registrationOtpTemplate(fullName, otp),
+      });
+    } catch (err) {
+      console.error("EMAIL ERROR:", err);
+      throw err;
+    }
 
     return res.status(200).json({
       success: true,
@@ -70,11 +75,14 @@ export const registerUser = async (req, res) => {
       email,
     });
   } catch (error) {
-    console.error(error);
+    console.log("========== REGISTER ERROR ==========");
+    console.log(error);
+    console.log("MESSAGE:", error?.message);
+    console.log("STACK:", error?.stack);
 
     return res.status(500).json({
       success: false,
-      message: "Internal server error.",
+      message: error?.message || "Internal server error.",
     });
   }
 };

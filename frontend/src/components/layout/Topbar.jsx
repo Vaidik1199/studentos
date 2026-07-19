@@ -30,7 +30,7 @@ function Topbar({ setSidebarOpen }) {
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    window.location.replace("/login");
   };
 
   useEffect(() => {
@@ -136,8 +136,8 @@ function Topbar({ setSidebarOpen }) {
             <ChevronDown
               size={18}
               className={`hidden transition-all duration-300 xl:block ${showProfile
-                  ? "rotate-180 text-white"
-                  : "text-slate-500"
+                ? "rotate-180 text-white"
+                : "text-slate-500"
                 }`}
             />
 

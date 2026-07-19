@@ -14,7 +14,6 @@ import assignmentRoutes from "./routes/assignmentRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import studyPlanRoutes from "./routes/studyPlanRoutes.js";
-import "./config/mail.js";
 import emailRoutes from "./routes/emailRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 
@@ -22,12 +21,17 @@ const app = express();
 
 connectDB();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_URL,
+];
+
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin(origin, callback) {
       if (
         !origin ||
-        origin === "http://localhost:5173" ||
+        allowedOrigins.includes(origin) ||
         origin.endsWith(".vercel.app")
       ) {
         callback(null, true);
@@ -38,6 +42,7 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

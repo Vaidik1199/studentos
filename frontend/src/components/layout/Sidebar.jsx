@@ -29,9 +29,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     .join("")
     .toUpperCase();
 
+  const { logout } = useAuth();
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
+    logout();
+    navigate("/login", { replace: true });
   };
 
   const closeSidebar = () => {
@@ -56,9 +58,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
       <aside
         data-lenis-prevent
-        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-hidden border-r border-slate-800/80 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 shadow-2xl transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col overflow-hidden border-r border-slate-800/80 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 shadow-2xl transition-transform duration-300 lg:static lg:flex lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         {/* Decorative Glow */}
 
@@ -120,7 +121,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
         </div>
 
-                {/* Navigation */}
+        {/* Navigation */}
 
         <nav className="flex-1 overflow-y-auto px-4 py-6 no-scrollbar">
 
@@ -138,10 +139,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/dashboard"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -153,10 +153,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/attendance"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -168,10 +167,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/assignments"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -183,10 +181,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/notes"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -212,10 +209,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/analytics"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -227,10 +223,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/ai"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -242,10 +237,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/study-planner"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -257,10 +251,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 to="/study-plans"
                 onClick={closeSidebar}
                 className={({ isActive }) =>
-                  `${navItem} ${
-                    isActive
-                      ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
-                      : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
+                  `${navItem} ${isActive
+                    ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-xl shadow-indigo-600/25"
+                    : "text-slate-300 hover:bg-slate-800/70 hover:text-white"
                   }`
                 }
               >
@@ -273,7 +266,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
 
         </nav>
-                {/* Bottom Section */}
+        {/* Bottom Section */}
 
         <div className="border-t border-slate-800/80 bg-slate-950/60 p-5 backdrop-blur-xl">
 
@@ -283,10 +276,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/profile"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `group mb-4 flex items-center gap-4 rounded-3xl border p-4 transition-all duration-300 ${
-                isActive
-                  ? "border-indigo-500/40 bg-gradient-to-r from-indigo-600/20 to-violet-600/20"
-                  : "border-slate-800 bg-slate-900/70 hover:border-indigo-500/40 hover:bg-slate-800/80"
+              `group mb-4 flex items-center gap-4 rounded-3xl border p-4 transition-all duration-300 ${isActive
+                ? "border-indigo-500/40 bg-gradient-to-r from-indigo-600/20 to-violet-600/20"
+                : "border-slate-800 bg-slate-900/70 hover:border-indigo-500/40 hover:bg-slate-800/80"
               }`
             }
           >
@@ -330,10 +322,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             to="/settings"
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `mb-3 flex items-center justify-center gap-2 rounded-2xl py-3.5 font-semibold transition-all duration-300 ${
-                isActive
-                  ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20"
-                  : "border border-slate-700 bg-slate-900 text-slate-300 hover:border-indigo-500 hover:bg-slate-800"
+              `mb-3 flex items-center justify-center gap-2 rounded-2xl py-3.5 font-semibold transition-all duration-300 ${isActive
+                ? "bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 text-white shadow-lg shadow-indigo-600/20"
+                : "border border-slate-700 bg-slate-900 text-slate-300 hover:border-indigo-500 hover:bg-slate-800"
               }`
             }
           >

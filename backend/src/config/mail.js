@@ -9,5 +9,9 @@ const transporter = nodemailer.createTransport({
     pass: process.env.BREVO_SMTP_KEY,
   },
 });
-
+console.log("BREVO_LOGIN:", process.env.BREVO_LOGIN);
+console.log(
+  "SMTP KEY EXISTS:",
+  !!process.env.BREVO_SMTP_KEY
+);
 export default transporter;

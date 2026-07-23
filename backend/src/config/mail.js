@@ -17,4 +17,12 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 30000,
 });
 
+transporter.verify((err) => {
+  if (err) {
+    console.error("VERIFY ERROR:", err);
+  } else {
+    console.log("SMTP READY");
+  }
+});
+
 export default transporter;

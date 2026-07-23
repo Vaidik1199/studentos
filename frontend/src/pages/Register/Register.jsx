@@ -1,7 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useAuth } from "../../contexts/AuthContext";
 
 import AuthLayout from "../../components/auth/AuthLayout";
@@ -11,59 +8,20 @@ import Button from "../../components/ui/Button";
 
 import toast from "react-hot-toast";
 
-import registerSchema from "../../validations/registerSchema";
-import {
-  registerUser,
-  googleLogin,
-} from "../../services/authService";
+import { googleLogin } from "../../services/authService";
 
 function Register() {
   const navigate = useNavigate();
 
   const { login } = useAuth();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const onSubmit = async (data) => {
-    try {
-      const { confirmPassword, ...userData } = data;
-
-      const response = await registerUser(userData);
-
-      toast.success(response.message);
-
-      navigate("/verify-registration", {
-        state: {
-          email: userData.email,
-          registerData: userData,
-        },
-      });
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-        "Something went wrong."
-      );
-    }
-  };
-
-  const handleGoogleSuccess = async (
-    credentialResponse
-  ) => {
+  const handleGoogleSuccess = async (credentialResponse) => {
     try {
       const response = await googleLogin(
         credentialResponse.credential
       );
 
-      login(
-        response.token,
-        response.data
-      );
+      login(response.token, response.data);
 
       toast.success(response.message);
 
@@ -71,7 +29,7 @@ function Register() {
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
-        "Google Sign Up Failed."
+          "Google Sign Up Failed."
       );
     }
   };
@@ -80,62 +38,86 @@ function Register() {
     toast.error("Google Sign Up Failed");
   };
 
+  const handleEmailRegistration = () => {
+    toast(
+      "🚧 Email registration is temporarily unavailable. Please continue with Google Sign Up."
+    );
+  };
+
   return (
     <AuthLayout
       title="Create Account"
       subtitle="Join StudentOS and start organizing your student life."
     >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
-      >
+      <div className="space-y-5">
         <GoogleAuthButton
           onSuccess={handleGoogleSuccess}
           onError={handleGoogleError}
         />
 
-        <Input
-          label="Full Name"
-          name="fullName"
-          placeholder="Enter your full name"
-          register={register}
-          error={errors.fullName}
-        />
+        {/* Upgrade Notice */}
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4">
+          <div className="flex gap-3">
+            <div className="text-xl">🚧</div>
 
-        <Input
-          label="Email"
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          register={register}
-          error={errors.email}
-        />
+            <div>
+              <h3 className="font-semibold text-amber-300">
+                Email Authentication Upgrade
+              </h3>
 
-        <Input
-          label="Password"
-          type="password"
-          name="password"
-          placeholder="Create a password"
-          register={register}
-          error={errors.password}
-        />
+              <p className="mt-2 text-sm leading-6 text-slate-300">
+                We're currently upgrading our email authentication system
+                to provide a faster and more secure experience.
+              </p>
 
-        <Input
-          label="Confirm Password"
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm your password"
-          register={register}
-          error={errors.confirmPassword}
-        />
+              <p className="mt-2 text-sm text-slate-400">
+                Please continue using{" "}
+                <span className="font-medium text-white">
+                  Google Sign Up
+                </span>
+                .
+                <br />
+                Email registration will return soon.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Disabled Form */}
+        <div className="pointer-events-none opacity-50 space-y-5">
+          <Input
+            label="Full Name"
+            name="fullName"
+            placeholder="Enter your full name"
+          />
+
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+          />
+
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+            placeholder="Create a password"
+          />
+
+          <Input
+            label="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm your password"
+          />
+        </div>
 
         <Button
-          type="submit"
-          disabled={isSubmitting}
+          type="button"
+          onClick={handleEmailRegistration}
         >
-          {isSubmitting
-            ? "Creating Account..."
-            : "Create Account"}
+          Email Registration (Coming Soon)
         </Button>
 
         <p className="text-center text-sm text-slate-400">
@@ -147,7 +129,7 @@ function Register() {
             Login
           </Link>
         </p>
-      </form>
+      </div>
     </AuthLayout>
   );
 }

@@ -1,38 +1,25 @@
-import axios from "axios";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const response = await axios.post(
-      "https://api.brevo.com/v3/smtp/email",
-      {
-        sender: {
-          name: "StudentOS Team",
-          email: process.env.EMAIL_USER,
-        },
-        to: [
-          {
-            email: to,
-          },
-        ],
-        subject,
-        htmlContent: html,
-      },
-      {
-        headers: {
-          "api-key": process.env.BREVO_API_KEY,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const { data, error } = await resend.emails.send({
+      from: "StudentOS <onboarding@resend.dev>",
+      to,
+      subject,
+      html,
+    });
 
-    console.log("Email sent:", response.data);
-  } catch (error) {
-    console.error(
-      "Brevo API Error:",
-      error.response?.data || error.message
-    );
+    if (error) {
+      console.error(error);
+      throw new Error(error.message);
+    }
 
-    throw error;
+    console.log("Email sent:", data);
+  } catch (err) {
+    console.error("Resend Error:", err);
+    throw err;
   }
 };
 

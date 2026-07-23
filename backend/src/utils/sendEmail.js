@@ -1,17 +1,36 @@
-import transporter from "../config/mail.js";
+import axios from "axios";
 
 const sendEmail = async ({ to, subject, html }) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"StudentOS Team" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html,
-    });
+    const response = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "StudentOS Team",
+          email: process.env.EMAIL_USER,
+        },
+        to: [
+          {
+            email: to,
+          },
+        ],
+        subject,
+        htmlContent: html,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    console.log("Email sent:", info);
+    console.log("Email sent:", response.data);
   } catch (error) {
-    console.error("Email Error:", error.message);
+    console.error(
+      "Brevo API Error:",
+      error.response?.data || error.message
+    );
 
     throw error;
   }

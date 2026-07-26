@@ -409,32 +409,6 @@ http://localhost:8000
 - Progressive Web App (PWA)
 - Mobile Application
 
----
-
-# 📷 Screenshots
-
-> Add screenshots of the following pages:
-
-- Home Page
-- Login
-- Register
-- Dashboard
-- AI Assistant
-- Notes
-- Assignments
-- Attendance
-- Study Planner
-- Task Manager
-
-Example
-
-```
-docs/
-│── home.png
-│── dashboard.png
-│── ai-chat.png
-│── notes.png
-```
 
 ---
 
@@ -487,13 +461,13 @@ AI & Data Science Undergraduate
 
 Full Stack Developer
 
-📧 Email: your-email@example.com
+📧 Email: vaidikhc@gmail.com
 
-💼 LinkedIn: https://linkedin.com/in/your-profile
+💼 LinkedIn: https://linkedin.com/in/vaidikchoudhary
 
-🌐 Portfolio: https://your-portfolio.vercel.app
+🌐 Portfolio: https://vaidikchoudhary.vercel.app
 
-🐙 GitHub: https://github.com/your-username
+🐙 GitHub: https://github.com/Vaidik1199
 
 ---
 

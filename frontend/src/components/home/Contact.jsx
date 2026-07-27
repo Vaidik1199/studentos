@@ -19,7 +19,7 @@ const socials = [
   {
     name: "LinkedIn",
     value: "Connect with Developer",
-    href: "https://www.linkedin.com/in/vaidik-choudhary-a21b40294/",
+    href: "https://www.linkedin.com/in/vaidikchoudhary/",
     icon: "in",
     color: "text-sky-400",
   },

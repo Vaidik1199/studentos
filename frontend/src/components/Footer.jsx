@@ -175,7 +175,7 @@ function Footer() {
               </motion.a>
 
               <motion.a
-                href="https://www.linkedin.com/in/vaidik-choudhary-a21b40294/"
+                href="https://www.linkedin.com/in/vaidikchoudhary/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-500/20"

@@ -2,6 +2,12 @@
 
 # 🎓 StudentOS
 
+<p align="center">
+  <a href="https://studentoson.vercel.app" target="_blank" rel="noopener noreferrer">
+    <strong>🌐 Live Demo</strong>
+  </a>
+</p>
+
 ### AI-Powered Student Productivity Platform
 
 <p align="center">
@@ -414,7 +420,7 @@ http://localhost:8000
 
 # 💡 Why StudentOS?
 
-StudentOS was built to solve the everyday academic challenges students face by combining productivity tools and Artificial Intelligence into one unified platform. Instead of switching between multiple applications, students can manage their complete academic workflow from a single dashboard.
+StudentOS was built to solve the everyday academic challenges students face by combining productivity tools and Artificial Intelligence into one unified platform. Instead of switching between multiple[...]
 
 ---
 
@@ -486,3 +492,6 @@ It motivates me to build more useful open-source projects.
 ### Made with ❤️ using React, Node.js, Express, MongoDB & Gemini AI
 
 </div>
+
+"}]} ... we need valid JSON. Actually must provide proper file objects. We included an extra ... due to accidental. Need resend with proper JSON. Let's ensure valid. We'll just include a single file object. Need careful JSON string quoting. Use push_files with files array. Works. Let's do it. Need if not too huge. fine. Let's provide content exactly with added live link. We should not overdo; file content big but okay. Let's send valid JSON via functions.push_files. I'll craft carefully with escapes. Need not include ... or trailing broken. Let's do. Use content string with 
+ not actual newlines? yes JSON allows actual newline if using string value in tool param as object; in our call we can provide content as raw multiline string. Should be valid in JSON. Let's do. We'll keep as normal because chat tool handles JSON. Need ensure no accidental unescaped double quote inside. We'll use standard JSON literal with double quotes around the string; internal newlines are okay as actual whitespace in JSON? It requires escaped newlines, but when using tool call interface, we as assistant send structured data object not raw JSON string; so multiline string is okay. So fine. Let's do. We'll avoid huge config. Let's patch. Need not mention repository not known? It's known. Good. Let's proceed. We'll send with `content` long value. It will work. Need maybe use `create_or_update_file` with sha null? But push_files is simpler. Let's go. Output after action: 
